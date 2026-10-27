@@ -1,3 +1,39 @@
-const menu=document.querySelector('.menu');const links=document.querySelector('.nav-links');if(menu&&links){menu.addEventListener('click',()=>links.classList.toggle('open'));}
-const style=document.createElement('style');style.textContent=`.brand{width:250px;height:70px;background:url('/assets/logo-lockup.svg?v=20261018h') left center/contain no-repeat!important;font-size:0!important;display:inline-block!important;flex:none}.brand>*{display:none!important}@media(max-width:900px){.brand{width:205px;height:57px}}@media(max-width:520px){.brand{width:190px;height:54px}}`;document.head.appendChild(style);
-document.querySelectorAll('body *').forEach(el=>{if(el.children.length===0&&el.textContent.includes('Los Angeles, California')){el.textContent=el.textContent.replace('Los Angeles, California','Missouri & California');}});
+const menu=document.querySelector('.menu');
+const links=document.querySelector('.nav-links');
+
+if(menu&&links){
+  menu.setAttribute('aria-expanded','false');
+  menu.setAttribute('aria-controls','site-navigation');
+  links.id=links.id||'site-navigation';
+
+  const closeMenu=()=>{
+    links.classList.remove('open');
+    menu.setAttribute('aria-expanded','false');
+    document.body.classList.remove('nav-open');
+  };
+
+  menu.addEventListener('click',()=>{
+    const isOpen=links.classList.toggle('open');
+    menu.setAttribute('aria-expanded',String(isOpen));
+    document.body.classList.toggle('nav-open',isOpen);
+  });
+
+  links.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMenu));
+  document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMenu();});
+  window.addEventListener('resize',()=>{if(window.innerWidth>900)closeMenu();});
+}
+
+const style=document.createElement('style');
+style.textContent=`
+.brand{width:250px;height:70px;background:url('/assets/logo-lockup.svg?v=20261018h') left center/contain no-repeat!important;font-size:0!important;display:inline-block!important;flex:none;max-width:38vw}.brand>*{display:none!important}
+@media(max-width:900px){.brand{width:184px;height:52px;max-width:64vw}}
+@media(max-width:520px){.brand{width:164px;height:46px;max-width:62vw}}
+@media(max-width:360px){.brand{width:146px;height:42px}}
+`;
+document.head.appendChild(style);
+
+document.querySelectorAll('body *').forEach(el=>{
+  if(el.children.length===0&&el.textContent.includes('Los Angeles, California')){
+    el.textContent=el.textContent.replace('Los Angeles, California','Missouri & California');
+  }
+});
