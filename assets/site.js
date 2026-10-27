@@ -1,3 +1,8 @@
+const responsive=document.createElement('link');
+responsive.rel='stylesheet';
+responsive.href='/assets/mobile.css?v=20261027a';
+document.head.appendChild(responsive);
+
 const menu=document.querySelector('.menu');
 const links=document.querySelector('.nav-links');
 
