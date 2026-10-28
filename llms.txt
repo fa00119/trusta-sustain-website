@@ -14,10 +14,10 @@ Government capabilities: https://trusta-sustain.com/government.html
 R&D and innovation: https://trusta-sustain.com/rd-innovation.html
 
 ## High-intent service pages
-- AI automation consulting: https://trusta-sustain.com/solutions/ai-automation-consulting.html
-- RFP analysis and proposal automation: https://trusta-sustain.com/solutions/rfp-proposal-automation.html
-- Data center AI, cooling, energy and infrastructure optimization: https://trusta-sustain.com/solutions/data-center-ai-optimization.html
-- Environmental engineering consulting: https://trusta-sustain.com/solutions/environmental-engineering-consulting.html
+- AI automation consulting: https://trusta-sustain.com/ai-automation-consulting.html
+- RFP response and proposal consulting: https://trusta-sustain.com/rfp-proposal-consulting.html
+- Data center AI, cooling, energy and infrastructure optimization: https://trusta-sustain.com/data-center-ai-optimization.html
+- Environmental engineering and compliance consulting: https://trusta-sustain.com/environmental-engineering-compliance.html
 
 ## Core capabilities
 Artificial intelligence, workflow automation, data analytics, CRM and revenue automation, RFP and proposal analysis, engineering consulting, data-center cooling and energy optimization, water and wastewater, environmental engineering, EHS, sustainability, infrastructure, technical assessments, training, and applied R&D.
