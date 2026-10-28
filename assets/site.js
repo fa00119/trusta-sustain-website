@@ -62,3 +62,50 @@ document.querySelectorAll('body *').forEach(el=>{
     el.textContent=el.textContent.replace('Los Angeles, California','Missouri & California');
   }
 });
+
+if(window.location.pathname.endsWith('/store.html')||window.location.pathname==='/store'){
+  const managed=document.querySelector('#managed');
+  if(managed&&!document.querySelector('#quick-services')){
+    const section=document.createElement('section');
+    section.className='section band';
+    section.id='quick-services';
+    section.innerHTML=`
+      <div class="container">
+        <div class="section-head">
+          <div><span class="eyebrow">Low-cost micro-services · $195–$295</span><h2>Need a small answer, not a $650+ engagement?</h2></div>
+          <p class="muted">These are intentionally narrow. Checkout, intake and file upload are online; Trusta analyzes the submitted evidence, performs QA, and returns the result through Secure Delivery. Standard target: within 2 business days after complete intake.</p>
+        </div>
+        <div class="grid grid-3">
+          <article class="card product-card">
+            <span class="num">$195</span><h3>Decision Snapshot</h3>
+            <div class="typebar"><span class="type">one decision</span><span class="type">managed + QA</span></div>
+            <p>For one defined business or technical decision when you need a short, evidence-aware recommendation rather than a full consulting project.</p>
+            <details class="what" open><summary>What you submit</summary><ul><li>the decision/question</li><li>context and constraints</li><li>supporting evidence if available</li><li>who will use the answer</li></ul></details>
+            <details class="what" open><summary>What you receive</summary><ul><li>decision framing</li><li>facts, assumptions and evidence gaps</li><li>options and tradeoffs</li><li>material risks</li><li>recommended next action</li></ul></details>
+            <div class="actions"><a class="btn btn-accent" href="https://buy.stripe.com/4gM00ia9t4oj5cB7Wbgbm0u">Start for $195</a></div>
+          </article>
+          <article class="card product-card">
+            <span class="num">$249</span><h3>Spreadsheet QuickCheck</h3>
+            <div class="typebar"><span class="type">1 XLSX/CSV</span><span class="type">≤ 5 MB</span></div>
+            <p>A focused quality and decision-readiness review before committing to a full cleanup or analysis engagement.</p>
+            <details class="what" open><summary>What is checked</summary><ul><li>obvious data-quality gaps</li><li>formula / logic risk</li><li>duplicates / consistency issues</li><li>decision-readiness and traceability</li></ul></details>
+            <details class="what" open><summary>What you receive</summary><ul><li>priority issue register</li><li>risk observations</li><li>recommended fixes</li><li>next-step recommendation: DIY, Rescue, or deeper analysis</li></ul></details>
+            <div class="actions"><a class="btn btn-accent" href="https://buy.stripe.com/fZu3cuftN1c7gVjekzgbm0v">Start for $249</a></div>
+          </article>
+          <article class="card product-card">
+            <span class="num">$295</span><h3>RFP Compliance QuickScan</h3>
+            <div class="typebar"><span class="type">1 solicitation</span><span class="type">1 near-final response</span></div>
+            <p>A narrow compliance/readiness screen before a full red-team review.</p>
+            <details class="what" open><summary>What is checked</summary><ul><li>mandatory requirements</li><li>missing or weak evidence</li><li>obvious evaluator-risk flags</li><li>submission-readiness gaps</li></ul></details>
+            <details class="what" open><summary>What you receive</summary><ul><li>priority compliance gaps</li><li>evidence-gap list</li><li>priority corrections</li><li>go-to-submit / needs-red-team posture</li></ul></details>
+            <div class="actions"><a class="btn btn-accent" href="https://buy.stripe.com/aFa6oGepJbQLdJ76S7gbm0w">Start for $295</a></div>
+          </article>
+        </div>
+      </div>`;
+    managed.insertAdjacentElement('beforebegin',section);
+    const catalog=document.querySelector('.catalog-nav');
+    if(catalog&&!catalog.querySelector('a[href="#quick-services"]')){
+      const a=document.createElement('a');a.href='#quick-services';a.textContent='Quick services';catalog.appendChild(a);
+    }
+  }
+}
