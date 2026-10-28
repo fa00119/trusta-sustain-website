@@ -6,6 +6,25 @@ document.head.appendChild(responsive);
 const menu=document.querySelector('.menu');
 const links=document.querySelector('.nav-links');
 
+if(links){
+  const hasLink=href=>Array.from(links.querySelectorAll('a')).some(link=>link.getAttribute('href')===href);
+  const addNavLink=(href,label,afterHref)=>{
+    if(hasLink(href))return;
+    const anchor=document.createElement('a');
+    anchor.href=href;
+    anchor.textContent=label;
+    const after=Array.from(links.querySelectorAll('a')).find(link=>link.getAttribute('href')===afterHref);
+    if(after)after.insertAdjacentElement('afterend',anchor);
+    else{
+      const cta=links.querySelector('.btn');
+      if(cta)links.insertBefore(anchor,cta);
+      else links.appendChild(anchor);
+    }
+  };
+  addNavLink('/pricing.html','Pricing','/products.html');
+  addNavLink('/store.html','Store','/pricing.html');
+}
+
 if(menu&&links){
   menu.setAttribute('aria-expanded','false');
   menu.setAttribute('aria-controls','site-navigation');
