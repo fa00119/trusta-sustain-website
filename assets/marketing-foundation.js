@@ -1,5 +1,38 @@
 (() => {
   const origin = 'https://trusta-sustain.com';
+  const GA4_ID = 'G-8GD2215R3Y';
+
+  // GA4: single shared measurement stream for the public site and Trusta app.
+  if (!document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${GA4_ID}"]`)) {
+    const ga = document.createElement('script');
+    ga.async = true;
+    ga.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`;
+    document.head.appendChild(ga);
+  }
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', GA4_ID, { send_page_view: true });
+
+  const track = (name, params={}) => {
+    try { window.gtag('event', name, params); } catch (_) {}
+  };
+
+  document.addEventListener('click', event => {
+    const link = event.target.closest?.('a[href]');
+    if (!link) return;
+    const href = link.getAttribute('href') || '';
+    const text = (link.textContent || '').trim().slice(0,120);
+    if (href.includes('buy.stripe.com') || href.includes('book.stripe.com')) {
+      track('begin_checkout', { link_url: href, link_text: text, page_path: location.pathname });
+    } else if (href.startsWith('/self-service') || href.startsWith('/instant-assessment') || href.startsWith('/roi-calculator')) {
+      track('self_service_start', { destination: href, link_text: text, page_path: location.pathname });
+    } else if (href.startsWith('mailto:growth@')) {
+      track('enterprise_contact_intent', { link_text: text, page_path: location.pathname });
+    } else if (href.includes('app.trusta-sustain.com')) {
+      track('app_open', { link_url: href, link_text: text, page_path: location.pathname });
+    }
+  }, { capture: true });
 
   // Entity disambiguation for search engines and AI systems. Keep the legal entity name explicit.
   if (!document.querySelector('script[data-trusta-org-schema]')) {
@@ -56,7 +89,6 @@
   const path = window.location.pathname;
   if (path !== '/' && !path.endsWith('/index.html')) return;
 
-  // Keep the home page synchronized with the current product architecture.
   const productCards = Array.from(document.querySelectorAll('.compact-section .card'));
   const infrastructure = productCards.find(card => card.querySelector('h3')?.textContent.trim() === 'Infrastructure Intelligence');
   if (infrastructure) {
@@ -83,13 +115,10 @@
     if (label) label.innerHTML = 'ORBIT<br>INFRASTRUCTURE';
   }
 
-  // Standard offers should route to self-service/store instead of requiring an email.
   const quickStartSection = Array.from(document.querySelectorAll('section')).find(section => section.querySelector('h2')?.textContent.includes('You do not need a large program'));
   if (quickStartSection) {
     const actions = quickStartSection.querySelector('.actions');
-    if (actions) {
-      actions.innerHTML = '<a class="btn btn-accent" href="/self-service.html">Start self-service →</a><a class="btn" href="/store.html">Shop ready-to-buy services →</a>';
-    }
+    if (actions) actions.innerHTML = '<a class="btn btn-accent" href="/self-service.html">Start self-service →</a><a class="btn" href="/store.html">Shop ready-to-buy services →</a>';
   }
 
   const finalCta = Array.from(document.querySelectorAll('.cta')).find(cta => cta.querySelector('h2')?.textContent.includes('Need a quick technical answer'));
@@ -100,7 +129,6 @@
     if (actions) actions.innerHTML = '<a class="btn btn-accent" href="/self-service.html">Start self-service</a><a class="btn" href="/store.html">Browse Store</a>';
   }
 
-  // Replace generic infrastructure product wording in the visible home page where possible.
   document.querySelectorAll('a.card h3').forEach(heading => {
     if (heading.textContent.trim() === 'Energy & Infrastructure Intelligence') {
       const card = heading.closest('a');
