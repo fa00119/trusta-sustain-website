@@ -13,7 +13,7 @@
     const text = (link.textContent || '').trim().slice(0,120);
     if (href.includes('buy.stripe.com') || href.includes('book.stripe.com')) {
       track('begin_checkout', { link_url: href, link_text: text, page_path: location.pathname });
-    } else if (href.startsWith('/self-service') || href.startsWith('/instant-assessment') || href.startsWith('/roi-calculator') || href.startsWith('/infrastructure-assessment')) {
+    } else if (href.startsWith('/self-service') || href.startsWith('/instant-assessment') || href.startsWith('/roi-calculator') || href.startsWith('/infrastructure-assessment') || href.startsWith('/value-opportunity-prioritizer')) {
       track('self_service_start', { destination: href, link_text: text, page_path: location.pathname });
     } else if (href.startsWith('mailto:growth@')) {
       track('enterprise_contact_intent', { link_text: text, page_path: location.pathname });
@@ -90,6 +90,25 @@
       screening.style.marginTop = '18px';
       screening.innerHTML = '<span class="eyebrow">Self-service first</span><h3>Infrastructure Decision Readiness Screening</h3><p>Before paying for a diagnostic, score system mapping, capacity evidence, dependencies, operating data, economics, resilience and decision controls. Get an instant readiness score, evidence gaps and recommended next step.</p><div class="actions"><a class="btn btn-accent" href="/infrastructure-assessment.html">Run free · 5–8 min</a></div>';
       commercial.appendChild(screening);
+    }
+    return;
+  }
+
+  // YIELD should demonstrate value-state discipline before asking for a portfolio diagnostic.
+  if (path.endsWith('/yield.html') || path === '/yield') {
+    const heroActions = document.querySelector('.page-hero .actions');
+    if (heroActions && !heroActions.querySelector('a[href="/value-opportunity-prioritizer.html"]')) {
+      heroActions.innerHTML = '<a class="btn btn-accent" href="/value-opportunity-prioritizer.html">Prioritize opportunities free</a><a class="btn" href="#lifecycle">Value lifecycle</a>';
+    }
+    const commercialHeading = Array.from(document.querySelectorAll('section')).find(section => section.querySelector('h2')?.textContent.includes('From improvement portfolio'));
+    const commercial = commercialHeading?.querySelector('.container');
+    if (commercial && !commercial.querySelector('[data-yield-prioritizer]')) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.dataset.yieldPrioritizer = 'true';
+      card.style.marginTop = '18px';
+      card.innerHTML = '<span class="eyebrow">Self-service first</span><h3>Value Opportunity Prioritizer</h3><p>Compare up to five opportunities by modeled annual benefit, implementation cost, payback, difficulty, operational risk and evidence confidence. Modeled opportunity value remains explicitly separate from verified realized value.</p><div class="actions"><a class="btn btn-accent" href="/value-opportunity-prioritizer.html">Prioritize free now</a></div>';
+      commercial.appendChild(card);
     }
     return;
   }
