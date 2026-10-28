@@ -122,3 +122,11 @@ if(window.location.pathname.endsWith('/self-service.html')||window.location.path
     heroGrid.appendChild(card);
   }
 }
+
+if(!document.querySelector('script[data-trusta-service-quality]')){
+  const serviceQuality=document.createElement('script');
+  serviceQuality.src='/assets/service-quality.js?v=20261028a';
+  serviceQuality.defer=true;
+  serviceQuality.dataset.trustaServiceQuality='true';
+  document.head.appendChild(serviceQuality);
+}
