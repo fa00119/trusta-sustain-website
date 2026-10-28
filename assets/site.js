@@ -23,6 +23,7 @@ if(links){
   };
   addNavLink('/pricing.html','Pricing','/products.html');
   addNavLink('/store.html','Store','/pricing.html');
+  addNavLink('/assessments.html','Assessments','/store.html');
 }
 
 if(menu&&links){
