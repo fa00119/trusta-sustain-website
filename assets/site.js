@@ -23,7 +23,8 @@ if(links){
   };
   addNavLink('/pricing.html','Pricing','/products.html');
   addNavLink('/store.html','Store','/pricing.html');
-  addNavLink('/assessments.html','Assessments','/store.html');
+  addNavLink('/self-service.html','Self-service','/store.html');
+  addNavLink('/assessments.html','Assessments','/self-service.html');
 }
 
 if(menu&&links){
@@ -72,40 +73,40 @@ if(window.location.pathname.endsWith('/store.html')||window.location.pathname===
     section.innerHTML=`
       <div class="container">
         <div class="section-head">
-          <div><span class="eyebrow">Low-cost micro-services · $195–$295</span><h2>Need a small answer, not a $650+ engagement?</h2></div>
-          <p class="muted">These are intentionally narrow. Checkout, intake and file upload are online; Trusta analyzes the submitted evidence, performs QA, and returns the result through Secure Delivery. Standard target: within 2 business days after complete intake.</p>
+          <div><span class="eyebrow">Self-service first · optional human QA</span><h2>Try the analysis yourself before paying for review.</h2></div>
+          <p class="muted">For common decisions and CSV data checks, Trusta now offers browser-based analysis first. If the result is enough, stop there. If you need evidence review, deeper interpretation, or human QA, upgrade to a fixed-scope review.</p>
         </div>
         <div class="grid grid-3">
           <article class="card product-card">
-            <span class="num">$195</span><h3>Decision Snapshot</h3>
-            <div class="typebar"><span class="type">one decision</span><span class="type">managed + QA</span></div>
-            <p>For one defined business or technical decision when you need a short, evidence-aware recommendation rather than a full consulting project.</p>
-            <details class="what" open><summary>What you submit</summary><ul><li>the decision/question</li><li>context and constraints</li><li>supporting evidence if available</li><li>who will use the answer</li></ul></details>
-            <details class="what" open><summary>What you receive</summary><ul><li>decision framing</li><li>facts, assumptions and evidence gaps</li><li>options and tradeoffs</li><li>material risks</li><li>recommended next action</li></ul></details>
-            <div class="actions"><a class="btn btn-accent" href="https://buy.stripe.com/4gM00ia9t4oj5cB7Wbgbm0u">Start for $195</a></div>
+            <span class="num">FREE → $195 optional</span><h3>Decision Snapshot</h3>
+            <div class="typebar"><span class="type">self-service first</span><span class="type">human QA optional</span></div>
+            <p>Compare options with weighted criteria, sensitivity, decision confidence, and an executive memo in your browser.</p>
+            <details class="what" open><summary>Free self-service output</summary><ul><li>weighted option ranking</li><li>relative fit and score separation</li><li>most influential criteria</li><li>confidence / sensitivity posture</li><li>decision memo + next actions</li><li>Print / Save PDF</li></ul></details>
+            <details class="what"><summary>When the $195 review adds value</summary><ul><li>evidence needs independent challenge</li><li>assumptions are uncertain</li><li>tradeoffs are high-impact</li><li>you want an independent recommendation</li></ul></details>
+            <div class="actions"><a class="btn btn-accent" href="/self-service.html">Run free now</a><a class="btn" href="https://buy.stripe.com/4gM00ia9t4oj5cB7Wbgbm0u">Add human QA · $195</a></div>
           </article>
           <article class="card product-card">
-            <span class="num">$249</span><h3>Spreadsheet QuickCheck</h3>
-            <div class="typebar"><span class="type">1 XLSX/CSV</span><span class="type">≤ 5 MB</span></div>
-            <p>A focused quality and decision-readiness review before committing to a full cleanup or analysis engagement.</p>
-            <details class="what" open><summary>What is checked</summary><ul><li>obvious data-quality gaps</li><li>formula / logic risk</li><li>duplicates / consistency issues</li><li>decision-readiness and traceability</li></ul></details>
-            <details class="what" open><summary>What you receive</summary><ul><li>priority issue register</li><li>risk observations</li><li>recommended fixes</li><li>next-step recommendation: DIY, Rescue, or deeper analysis</li></ul></details>
-            <div class="actions"><a class="btn btn-accent" href="https://buy.stripe.com/fZu3cuftN1c7gVjekzgbm0v">Start for $249</a></div>
+            <span class="num">FREE → $249 optional</span><h3>Spreadsheet / CSV QuickScan</h3>
+            <div class="typebar"><span class="type">local browser scan</span><span class="type">no upload</span></div>
+            <p>Run a first-pass data-quality profile locally on your device before buying a deeper review.</p>
+            <details class="what" open><summary>Free self-service output</summary><ul><li>rows and columns</li><li>missingness by column</li><li>exact duplicate rows</li><li>likely data types</li><li>possible numeric outlier flags</li><li>quality score + priority actions</li></ul></details>
+            <details class="what"><summary>When the $249 review adds value</summary><ul><li>formula logic needs inspection</li><li>business meaning / lineage matters</li><li>multiple sheets or complex structures exist</li><li>you need independent decision-readiness QA</li></ul></details>
+            <div class="actions"><a class="btn btn-accent" href="/self-service.html">Scan CSV free</a><a class="btn" href="https://buy.stripe.com/fZu3cuftN1c7gVjekzgbm0v">Add human QA · $249</a></div>
           </article>
           <article class="card product-card">
-            <span class="num">$295</span><h3>RFP Compliance QuickScan</h3>
-            <div class="typebar"><span class="type">1 solicitation</span><span class="type">1 near-final response</span></div>
-            <p>A narrow compliance/readiness screen before a full red-team review.</p>
-            <details class="what" open><summary>What is checked</summary><ul><li>mandatory requirements</li><li>missing or weak evidence</li><li>obvious evaluator-risk flags</li><li>submission-readiness gaps</li></ul></details>
-            <details class="what" open><summary>What you receive</summary><ul><li>priority compliance gaps</li><li>evidence-gap list</li><li>priority corrections</li><li>go-to-submit / needs-red-team posture</li></ul></details>
-            <div class="actions"><a class="btn btn-accent" href="https://buy.stripe.com/aFa6oGepJbQLdJ76S7gbm0w">Start for $295</a></div>
+            <span class="num">FREE → $295 optional</span><h3>Proposal / RFP Readiness</h3>
+            <div class="typebar"><span class="type">instant assessment</span><span class="type">red-team upgrade</span></div>
+            <p>Run the free Proposal/RFP Readiness assessment first; buy a QuickScan only when the actual solicitation and response need evidence-based review.</p>
+            <details class="what" open><summary>Free self-service output</summary><ul><li>readiness score</li><li>compliance / evidence / schedule gaps</li><li>priority findings</li><li>30-day action plan</li><li>PDF-ready report</li></ul></details>
+            <details class="what"><summary>Paid QuickScan adds</summary><ul><li>review of one actual solicitation</li><li>review of one near-final response</li><li>mandatory requirement gaps</li><li>evidence and evaluator-risk flags</li><li>priority corrections</li></ul></details>
+            <div class="actions"><a class="btn btn-accent" href="/instant-assessment.html">Assess free now</a><a class="btn" href="https://buy.stripe.com/aFa6oGepJbQLdJ76S7gbm0w">Add human QuickScan · $295</a></div>
           </article>
         </div>
       </div>`;
     managed.insertAdjacentElement('beforebegin',section);
     const catalog=document.querySelector('.catalog-nav');
     if(catalog&&!catalog.querySelector('a[href="#quick-services"]')){
-      const a=document.createElement('a');a.href='#quick-services';a.textContent='Quick services';catalog.appendChild(a);
+      const a=document.createElement('a');a.href='#quick-services';a.textContent='Self-service + QA';catalog.appendChild(a);
     }
   }
 }
