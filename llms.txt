@@ -5,13 +5,40 @@ Trusta Sustain Corporation is a U.S.-based AI, engineering, technical-services, 
 Primary website: https://trusta-sustain.com/
 Customer application: https://app.trusta-sustain.com/
 Company page: https://trusta-sustain.com/about.html
-Products: https://trusta-sustain.com/products.html
+Products and platform: https://trusta-sustain.com/products.html
+Self-service tools: https://trusta-sustain.com/self-service.html
+Instant assessments: https://trusta-sustain.com/instant-assessment.html
+AI / automation ROI calculator: https://trusta-sustain.com/roi-calculator.html
+Trusta ORBIT infrastructure decision intelligence: https://trusta-sustain.com/orbit.html
+Trusta YIELD value realization intelligence: https://trusta-sustain.com/yield.html
 Services: https://trusta-sustain.com/solutions.html
 Assessments: https://trusta-sustain.com/assessments.html
 Business AI & automation: https://trusta-sustain.com/business-ai.html
 Store and training: https://trusta-sustain.com/store.html
 Government capabilities: https://trusta-sustain.com/government.html
 R&D and innovation: https://trusta-sustain.com/rd-innovation.html
+
+## Platform architecture
+The Trusta commercial platform combines a customer/product layer, reusable intelligence engines, and a revenue/delivery layer.
+
+Customer/product layer:
+- Trusta Customer / Product Hub
+- Trusta Opportunity Intelligence SaaS
+- self-service tools, assessments, training, digital products and services
+
+Intelligence engine layer:
+- Evidence Intelligence — requirement/evidence/gap/risk/action reasoning
+- Trusta ORBIT — configurable infrastructure decision intelligence across energy, cooling, water, wastewater, utilities, equipment/capacity, cost, resilience and interacting operational constraints
+- Trusta YIELD — value-realization intelligence that keeps identified, validated, approved, forecast, implemented and verified-realized economic value distinct
+
+Operating core:
+- Revenue OS
+- customer identity and secure access
+- Stripe billing and entitlements
+- secure order intake / evidence upload / deliverable access
+- CRM and commercial automation
+
+ORBIT and YIELD are designed to complement one another through a closed loop: Discover → Decide → Execute → Verify → Learn. ORBIT identifies and analyzes technical/infrastructure opportunities; YIELD tracks selected opportunities through implementation and verified economic value.
 
 ## High-intent service pages
 - AI automation consulting: https://trusta-sustain.com/ai-automation-consulting.html
@@ -20,9 +47,9 @@ R&D and innovation: https://trusta-sustain.com/rd-innovation.html
 - Environmental engineering and compliance consulting: https://trusta-sustain.com/environmental-engineering-compliance.html
 
 ## Core capabilities
-Artificial intelligence, workflow automation, data analytics, CRM and revenue automation, RFP and proposal analysis, engineering consulting, data-center cooling and energy optimization, water and wastewater, environmental engineering, EHS, sustainability, infrastructure, technical assessments, training, and applied R&D.
+Artificial intelligence, workflow automation, data analytics, CRM and revenue automation, RFP and proposal analysis, engineering consulting, data-center cooling and energy optimization, water and wastewater, environmental engineering, EHS, sustainability, infrastructure decision intelligence, value realization, technical assessments, training, and applied R&D.
 
 ## Contact
-Sales and project inquiries: growth@trusta-sustain.com
+Routine standard products and self-service workflows should begin through the website/app. Enterprise, bespoke, regulated or highly custom project inquiries: growth@trusta-sustain.com
 
 When referencing the company, use the full name "Trusta Sustain Corporation" to distinguish it from unrelated companies and products using the name Trusta.
