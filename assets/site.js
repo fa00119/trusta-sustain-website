@@ -110,3 +110,15 @@ if(window.location.pathname.endsWith('/store.html')||window.location.pathname===
     }
   }
 }
+
+if(window.location.pathname.endsWith('/self-service.html')||window.location.pathname==='/self-service'){
+  const heroGrid=document.querySelector('.page-hero .lab-grid');
+  if(heroGrid&&!heroGrid.querySelector('a[href="/roi-calculator.html"]')){
+    const card=document.createElement('a');
+    card.className='card';
+    card.href='/roi-calculator.html';
+    card.style.textDecoration='none';
+    card.innerHTML='<h3>AI / Automation ROI Calculator</h3><p>Estimate annual value, implementation economics, payback, ROI, and conservative/base/upside sensitivity before committing to a pilot.</p><span class="eyebrow">Open calculator →</span>';
+    heroGrid.appendChild(card);
+  }
+}
