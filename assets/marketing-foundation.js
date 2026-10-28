@@ -1,21 +1,9 @@
 (() => {
   const origin = 'https://trusta-sustain.com';
-  const GA4_ID = 'G-8GD2215R3Y';
 
-  // GA4: single shared measurement stream for the public site and Trusta app.
-  if (!document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${GA4_ID}"]`)) {
-    const ga = document.createElement('script');
-    ga.async = true;
-    ga.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`;
-    document.head.appendChild(ga);
-  }
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
-  window.gtag('js', new Date());
-  window.gtag('config', GA4_ID, { send_page_view: true });
-
+  // GA4 is initialized once by assets/site.js. This shared layer only emits events.
   const track = (name, params={}) => {
-    try { window.gtag('event', name, params); } catch (_) {}
+    try { if (typeof window.gtag === 'function') window.gtag('event', name, params); } catch (_) {}
   };
 
   document.addEventListener('click', event => {
@@ -25,7 +13,7 @@
     const text = (link.textContent || '').trim().slice(0,120);
     if (href.includes('buy.stripe.com') || href.includes('book.stripe.com')) {
       track('begin_checkout', { link_url: href, link_text: text, page_path: location.pathname });
-    } else if (href.startsWith('/self-service') || href.startsWith('/instant-assessment') || href.startsWith('/roi-calculator')) {
+    } else if (href.startsWith('/self-service') || href.startsWith('/instant-assessment') || href.startsWith('/roi-calculator') || href.startsWith('/infrastructure-assessment')) {
       track('self_service_start', { destination: href, link_text: text, page_path: location.pathname });
     } else if (href.startsWith('mailto:growth@')) {
       track('enterprise_contact_intent', { link_text: text, page_path: location.pathname });
@@ -87,6 +75,25 @@
   }
 
   const path = window.location.pathname;
+
+  // ORBIT should offer a no-login screening before asking for a paid diagnostic or enterprise scope.
+  if (path.endsWith('/orbit.html') || path === '/orbit') {
+    const heroActions = document.querySelector('.page-hero .actions');
+    if (heroActions && !heroActions.querySelector('a[href="/infrastructure-assessment.html"]')) {
+      heroActions.innerHTML = '<a class="btn btn-accent" href="/infrastructure-assessment.html">Run free infrastructure screening</a><a class="btn" href="#commercial">Commercial paths</a>';
+    }
+    const commercial = document.querySelector('#commercial .container');
+    if (commercial && !commercial.querySelector('[data-orbit-screening]')) {
+      const screening = document.createElement('div');
+      screening.className = 'card';
+      screening.dataset.orbitScreening = 'true';
+      screening.style.marginTop = '18px';
+      screening.innerHTML = '<span class="eyebrow">Self-service first</span><h3>Infrastructure Decision Readiness Screening</h3><p>Before paying for a diagnostic, score system mapping, capacity evidence, dependencies, operating data, economics, resilience and decision controls. Get an instant readiness score, evidence gaps and recommended next step.</p><div class="actions"><a class="btn btn-accent" href="/infrastructure-assessment.html">Run free · 5–8 min</a></div>';
+      commercial.appendChild(screening);
+    }
+    return;
+  }
+
   if (path !== '/' && !path.endsWith('/index.html')) return;
 
   const productCards = Array.from(document.querySelectorAll('.compact-section .card'));
