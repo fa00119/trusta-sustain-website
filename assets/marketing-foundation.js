@@ -76,6 +76,22 @@
 
   const path = window.location.pathname;
 
+  if (path.endsWith('/self-service.html') || path === '/self-service') {
+    const grid = document.querySelector('.page-hero .lab-grid');
+    const addToolCard = (href, title, copy, eyebrow) => {
+      if (!grid || grid.querySelector(`a[href="${href}"]`)) return;
+      const card = document.createElement('a');
+      card.className = 'card';
+      card.href = href;
+      card.style.textDecoration = 'none';
+      card.innerHTML = `<h3>${title}</h3><p>${copy}</p><span class="eyebrow">${eyebrow} →</span>`;
+      grid.appendChild(card);
+    };
+    addToolCard('/infrastructure-assessment.html','ORBIT Infrastructure Readiness','Score system mapping, capacity evidence, dependencies, operating data, economics, resilience, and decision controls before paying for deeper analysis.','Run screening');
+    addToolCard('/value-opportunity-prioritizer.html','YIELD Value Opportunity Prioritizer','Compare modeled benefit, implementation cost, payback, difficulty, risk, and evidence confidence while keeping forecast value distinct from realized value.','Prioritize opportunities');
+    return;
+  }
+
   // ORBIT should offer a no-login screening before asking for a paid diagnostic or enterprise scope.
   if (path.endsWith('/orbit.html') || path === '/orbit') {
     const heroActions = document.querySelector('.page-hero .actions');
