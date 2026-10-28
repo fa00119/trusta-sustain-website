@@ -3,6 +3,7 @@
 Trusta Sustain Corporation is a U.S.-based AI, engineering, technical-services, products, and applied R&D company founded in 2023.
 
 Primary website: https://trusta-sustain.com/
+Customer application: https://app.trusta-sustain.com/
 Company page: https://trusta-sustain.com/about.html
 Products: https://trusta-sustain.com/products.html
 Services: https://trusta-sustain.com/solutions.html
