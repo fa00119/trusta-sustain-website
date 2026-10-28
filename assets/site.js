@@ -1,3 +1,22 @@
+const GA4_MEASUREMENT_ID='G-8GD2215R3Y';
+
+if(!window.__trustaGa4Initialized){
+  window.__trustaGa4Initialized=true;
+  window.dataLayer=window.dataLayer||[];
+  window.gtag=window.gtag||function(){window.dataLayer.push(arguments);};
+  window.gtag('js',new Date());
+  window.gtag('config',GA4_MEASUREMENT_ID,{send_page_view:true});
+  const ga=document.createElement('script');
+  ga.async=true;
+  ga.src=`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA4_MEASUREMENT_ID)}`;
+  ga.dataset.trustaGa4='true';
+  document.head.appendChild(ga);
+}
+
+function trackTrustaEvent(name,params={}){
+  if(typeof window.gtag==='function') window.gtag('event',name,params);
+}
+
 const responsive=document.createElement('link');
 responsive.rel='stylesheet';
 responsive.href='/assets/mobile.css?v=20261027a';
@@ -122,6 +141,28 @@ if(window.location.pathname.endsWith('/self-service.html')||window.location.path
     heroGrid.appendChild(card);
   }
 }
+
+document.addEventListener('click',event=>{
+  const anchor=event.target instanceof Element?event.target.closest('a[href]'):null;
+  if(!anchor)return;
+  const href=anchor.getAttribute('href')||'';
+  const text=(anchor.textContent||'').trim().slice(0,80);
+  if(href.includes('buy.stripe.com')){
+    trackTrustaEvent('begin_checkout',{link_text:text,offer_path:window.location.pathname});
+    return;
+  }
+  if(href.includes('/self-service.html')||href.includes('/instant-assessment.html')||href.includes('/roi-calculator.html')){
+    trackTrustaEvent('self_service_start',{tool_url:href,source_path:window.location.pathname});
+    return;
+  }
+  if(href.includes('app.trusta-sustain.com')){
+    trackTrustaEvent('app_open',{destination:href,source_path:window.location.pathname});
+    return;
+  }
+  if(href.startsWith('mailto:')){
+    trackTrustaEvent('enterprise_contact_intent',{source_path:window.location.pathname});
+  }
+});
 
 if(!document.querySelector('script[data-trusta-service-quality]')){
   const serviceQuality=document.createElement('script');
