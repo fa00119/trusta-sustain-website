@@ -130,3 +130,11 @@ if(!document.querySelector('script[data-trusta-service-quality]')){
   serviceQuality.dataset.trustaServiceQuality='true';
   document.head.appendChild(serviceQuality);
 }
+
+if(!document.querySelector('script[data-trusta-marketing-foundation]')){
+  const marketingFoundation=document.createElement('script');
+  marketingFoundation.src='/assets/marketing-foundation.js?v=20261028a';
+  marketingFoundation.defer=true;
+  marketingFoundation.dataset.trustaMarketingFoundation='true';
+  document.head.appendChild(marketingFoundation);
+}
