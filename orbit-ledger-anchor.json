@@ -8,5 +8,5 @@
   "anchor_status": "batch-2-registered",
   "registry": "/orbit-predictions.json",
   "policy": "No backfilled predictions. Public records are added only after registration in the append-only ledger. Customer predictions are private by default. Employer-affiliated projects are excluded from the public track record.",
-  "updated_at": "2026-10-28T22:12:00-07:00"
+  "updated_at": "2026-10-28T22:13:33-07:00"
 }
