@@ -1,0 +1,10 @@
+{
+  "ledger": "ORBIT Prediction Ledger",
+  "public_launch_date": "2026-10-28",
+  "public_predictions_registered": 0,
+  "resolved_predictions": 0,
+  "chain_head": null,
+  "anchor_status": "genesis-launch",
+  "policy": "No backfilled predictions. Public records are added only after registration in the append-only ledger. Customer predictions are private by default. Employer-affiliated projects are excluded from the public track record.",
+  "updated_at": "2026-10-28T21:45:00-07:00"
+}
