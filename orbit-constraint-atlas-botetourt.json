@@ -1,0 +1,26 @@
+{
+  "atlas": "ORBIT Constraint Atlas",
+  "vertical": "Water + Wastewater",
+  "pilot_region": "Botetourt County / Daleville, Virginia",
+  "published_at": "2026-10-28T22:06:00-07:00",
+  "record_count": 14,
+  "coverage": {"water_supply":5,"water_regulation":1,"wastewater_capacity":2,"permitting":4,"utility_dependency":1,"system_context":1},
+  "prediction_links": ["ORBIT-PUB-2026-001","ORBIT-PUB-2026-002","ORBIT-PUB-2026-003","ORBIT-PUB-2026-004"],
+  "policy": "Public records are source-linked and dated. Planning reservations and permit status are not represented as site-specific final engineering capacity or entitlement.",
+  "records": [
+    {"id":"BTVA-001","domain":"water_supply","parameter":"Required water provider","value":"Western Virginia Water Authority; connection required","confidence":0.99,"source":"https://www.botetourtva.gov/1023/Google-Data-Center-Water"},
+    {"id":"BTVA-002","domain":"wastewater_capacity","parameter":"Required sewer provider","value":"Western Virginia Water Authority; connection required","confidence":0.99,"source":"https://www.botetourtva.gov/1023/Google-Data-Center-Water"},
+    {"id":"BTVA-003","domain":"water_supply","parameter":"Day-1 water planning reservation","value":"No more than 2.0 MGD; planning reservation, not actual operating consumption","confidence":0.99,"source":"https://www.botetourtva.gov/1023/Google-Data-Center-Water"},
+    {"id":"BTVA-004","domain":"wastewater_capacity","parameter":"Day-1 wastewater planning reservation","value":"No more than 0.57 MGD; planning reservation, not actual discharge","confidence":0.99,"source":"https://www.botetourtva.gov/1023/Google-Data-Center-Water"},
+    {"id":"BTVA-005","domain":"water_supply","parameter":"Initial source water","value":"Carvins Cove named as initial source","confidence":0.98,"source":"https://www.westernvawater.org/customers/capital-projects/draft-proposed-data-center-in-botetourt-center-at-greenfield"},
+    {"id":"BTVA-006","domain":"water_supply","parameter":"New source-development program","value":"WVWA agreements authorize new-source study/development; project-specific infrastructure funded by developer","confidence":0.97,"source":"https://www.botetourtva.gov/m/newsflash/Home/Detail/921"},
+    {"id":"BTVA-007","domain":"water_supply","parameter":"First-building cooling posture","value":"Air-cooled; WVWA expects lower overall water demand than originally projected; updated demand figure not yet public","confidence":0.99,"source":"https://www.westernvawater.org/customers/capital-projects/draft-proposed-data-center-in-botetourt-center-at-greenfield","prediction_links":["ORBIT-PUB-2026-003"]},
+    {"id":"BTVA-008","domain":"permitting","parameter":"VWP individual permit","value":"Request 25-1919; under review; received Jan. 21, 2026","confidence":0.99,"source":"https://www.deq.virginia.gov/news-info/shortcuts/topics-of-interest/google-s-project-raspberry","prediction_links":["ORBIT-PUB-2026-001","ORBIT-PUB-2026-004"]},
+    {"id":"BTVA-009","domain":"permitting","parameter":"Minor NSR permit","value":"Request 21819-1; under review; received May 13, 2026","confidence":0.99,"source":"https://www.deq.virginia.gov/news-info/shortcuts/topics-of-interest/google-s-project-raspberry","prediction_links":["ORBIT-PUB-2026-004"]},
+    {"id":"BTVA-010","domain":"permitting","parameter":"Land Disturbance Permit","value":"Issued for Mass Grading Package No. 1; announced Aug. 26, 2026","confidence":0.99,"source":"https://www.botetourtva.gov/m/newsflash/home/detail/1180","prediction_links":["ORBIT-PUB-2026-002"]},
+    {"id":"BTVA-011","domain":"permitting","parameter":"Wetland-disturbance constraint","value":"Grading may proceed outside wetlands; regulated stream/wetland disturbance awaits applicable permits","confidence":0.98,"source":"https://www.botetourtva.gov/m/newsflash/home/detail/1180","prediction_links":["ORBIT-PUB-2026-001","ORBIT-PUB-2026-004"]},
+    {"id":"BTVA-012","domain":"water_regulation","parameter":"VWP surface-water impact review","value":"Review includes impacts to unnamed tributaries to Tinker Creek and Rulman Branch","confidence":0.98,"source":"https://www.deq.virginia.gov/news-info/shortcuts/topics-of-interest/google-s-project-raspberry"},
+    {"id":"BTVA-013","domain":"utility_dependency","parameter":"Transmission upgrade scope","value":"About 17 miles of 138-kV line upgrade; four substations upgraded; one new substation; SCC filing planned","confidence":0.97,"source":"https://www.botetourtva.gov/1024/Google-Data-Center-Electricity"},
+    {"id":"BTVA-014","domain":"system_context","parameter":"Regional utility scale","value":"WVWA FAQ reports 21 MGD drinking-water treatment, 32 MGD wastewater treatment, 70,000 connections and 2,500 miles of mains; context only, not site-specific available capacity","confidence":0.95,"source":"https://www.westernvawater.org/home/showpublisheddocument/14648/639094311774070000"}
+  ]
+}
