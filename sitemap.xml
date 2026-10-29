@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://trusta-sustain.com/</loc></url>
+<url><loc>https://trusta-sustain.com/</loc><lastmod>2026-10-28</lastmod></url>
 <url><loc>https://trusta-sustain.com/products.html</loc><lastmod>2026-10-28</lastmod></url>
-<url><loc>https://trusta-sustain.com/pricing.html</loc></url>
+<url><loc>https://trusta-sustain.com/pricing.html</loc><lastmod>2026-10-28</lastmod></url>
+<url><loc>https://trusta-sustain.com/training.html</loc><lastmod>2026-10-28</lastmod></url>
+<url><loc>https://trusta-sustain.com/delivery.html</loc><lastmod>2026-10-28</lastmod></url>
+<url><loc>https://trusta-sustain.com/trust-standard.html</loc><lastmod>2026-10-28</lastmod></url>
 <url><loc>https://trusta-sustain.com/business-ai.html</loc></url>
-<url><loc>https://trusta-sustain.com/store.html</loc></url>
+<url><loc>https://trusta-sustain.com/store.html</loc><lastmod>2026-10-28</lastmod></url>
 <url><loc>https://trusta-sustain.com/self-service.html</loc><lastmod>2026-10-28</lastmod></url>
 <url><loc>https://trusta-sustain.com/instant-assessment.html</loc><lastmod>2026-10-28</lastmod></url>
 <url><loc>https://trusta-sustain.com/infrastructure-assessment.html</loc><lastmod>2026-10-28</lastmod></url>
@@ -12,7 +15,7 @@
 <url><loc>https://trusta-sustain.com/roi-calculator.html</loc><lastmod>2026-10-28</lastmod></url>
 <url><loc>https://trusta-sustain.com/orbit.html</loc><lastmod>2026-10-28</lastmod></url>
 <url><loc>https://trusta-sustain.com/yield.html</loc><lastmod>2026-10-28</lastmod></url>
-<url><loc>https://trusta-sustain.com/assessments.html</loc></url>
+<url><loc>https://trusta-sustain.com/assessments.html</loc><lastmod>2026-10-28</lastmod></url>
 <url><loc>https://trusta-sustain.com/technology.html</loc></url>
 <url><loc>https://trusta-sustain.com/rd-innovation.html</loc></url>
 <url><loc>https://trusta-sustain.com/solutions.html</loc></url>
