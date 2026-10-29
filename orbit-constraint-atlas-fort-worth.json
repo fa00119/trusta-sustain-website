@@ -1,0 +1,25 @@
+{
+  "atlas": "ORBIT Constraint Atlas",
+  "vertical": "Water + Wastewater",
+  "pilot_region": "Fort Worth, Texas",
+  "published_at": "2026-10-28T22:12:00-07:00",
+  "record_count": 13,
+  "coverage": {"water_supply":2,"water_regulation":2,"wastewater_capacity":1,"pretreatment":4,"permitting":4},
+  "prediction_links": ["ORBIT-PUB-2026-013","ORBIT-PUB-2026-014","ORBIT-PUB-2026-015","ORBIT-PUB-2026-016"],
+  "policy": "Public records are source-linked and dated. Adopted requirements are separated from proposals and scheduled future actions; no proposed zoning/noise rule or tentative moratorium vote is represented as adopted.",
+  "records": [
+    {"id":"FWTX-001","domain":"permitting","parameter":"Data-center application requirement","value":"Adopted by City Council Aug. 11, 2026","confidence":0.99,"source":"https://www.fortworthtexas.gov/departments/city-manager/datacenters"},
+    {"id":"FWTX-002","domain":"water_regulation","parameter":"Closed-loop cooling requirement","value":"All new data centers in Fort Worth Water Utility service area must use closed-loop cooling systems","confidence":0.99,"source":"https://www.fortworthtexas.gov/departments/city-manager/datacenters"},
+    {"id":"FWTX-003","domain":"pretreatment","parameter":"NSIU pretreatment permit","value":"All new data centers in Fort Worth Water Utility service area must obtain a Non-Significant Industrial User pretreatment permit","confidence":0.99,"source":"https://www.fortworthtexas.gov/departments/city-manager/datacenters"},
+    {"id":"FWTX-004","domain":"pretreatment","parameter":"Chemical disclosure authority","value":"NSIU permit may require chemical disclosure and Safety Data Sheets","confidence":0.99,"source":"https://www.fortworthtexas.gov/departments/city-manager/datacenters"},
+    {"id":"FWTX-005","domain":"pretreatment","parameter":"Spill/slug/containment authority","value":"NSIU permit may require spill prevention, slug control and secondary containment","confidence":0.99,"source":"https://www.fortworthtexas.gov/departments/city-manager/datacenters"},
+    {"id":"FWTX-006","domain":"pretreatment","parameter":"Monitoring/discharge/reporting authority","value":"NSIU permit may require monitoring and inspection access, discharge limitations, annual certification, training, reporting and emergency notification","confidence":0.99,"source":"https://www.fortworthtexas.gov/departments/city-manager/datacenters"},
+    {"id":"FWTX-007","domain":"wastewater_capacity","parameter":"Wastewater study requirement","value":"Required studies determine system impacts, needed improvements and permit requirements","confidence":0.99,"source":"https://www.fortworthtexas.gov/departments/city-manager/datacenters"},
+    {"id":"FWTX-008","domain":"water_supply","parameter":"Water loading study requirement","value":"Study identifies demand, system impact, off-site improvements, and meter/tap size","confidence":0.99,"source":"https://www.fortworthtexas.gov/departments/city-manager/datacenters"},
+    {"id":"FWTX-009","domain":"water_supply","parameter":"Off-site infrastructure cost responsibility","value":"Developer pays full cost of extending off-site water infrastructure; City may contribute for oversizing","confidence":0.99,"source":"https://www.fortworthtexas.gov/departments/city-manager/datacenters"},
+    {"id":"FWTX-010","domain":"water_regulation","parameter":"Connection-cost framework","value":"Water/wastewater impact fees are meter-size based; connection charges include a Council-adopted per-MGD water-allocation charge","confidence":0.99,"source":"https://www.fortworthtexas.gov/departments/city-manager/datacenters"},
+    {"id":"FWTX-011","domain":"permitting","parameter":"DCIC report timeline","value":"Report/recommendations due Nov. 3, 2026; presentation scheduled Nov. 10, 2026; scheduled/due is not completed","confidence":0.99,"source":"https://www.fortworthtexas.gov/departments/city-manager/datacenters","prediction_links":["ORBIT-PUB-2026-013"]},
+    {"id":"FWTX-012","domain":"permitting","parameter":"Data-center moratorium process","value":"Process initiated Aug. 11; first hearing due no later than Nov. 10; tentative adoption vote Feb. 16, 2027; moratorium not represented as adopted","confidence":0.99,"source":"https://www.fortworthtexas.gov/departments/city-manager/datacenters","prediction_links":["ORBIT-PUB-2026-014","ORBIT-PUB-2026-015"]},
+    {"id":"FWTX-013","domain":"permitting","parameter":"Proposed zoning/noise package","value":"June 2026 data-center-specific zoning and noise standards remain proposed, not adopted","confidence":0.99,"source":"https://www.fortworthtexas.gov/departments/city-manager/datacenters","prediction_links":["ORBIT-PUB-2026-016"]}
+  ]
+}
