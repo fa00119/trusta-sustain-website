@@ -1,0 +1,29 @@
+{
+  "atlas": "ORBIT Constraint Atlas",
+  "vertical": "Water + Wastewater",
+  "pilot_region": "Casa Grande / Pinal AMA, Arizona",
+  "published_at": "2026-10-28T21:53:00-07:00",
+  "record_count": 18,
+  "coverage": {"water_supply":2,"water_regulation":2,"wastewater_capacity":4,"pretreatment":5,"reuse":2,"permitting":3},
+  "policy": "Public records are source-linked and dated. Draft/proposed values remain labeled as draft/proposed. Changed facts are superseded rather than silently overwritten.",
+  "records": [
+    {"id":"CGAZ-001","domain":"water_regulation","parameter":"Active Management Area","value":"Pinal Active Management Area","confidence":0.99,"source":"https://www.azwater.gov/active-management-area-ama"},
+    {"id":"CGAZ-002","domain":"water_regulation","parameter":"Pinal AMA management goal","value":"Preserve agriculture as long as feasible while considering groundwater for future non-irrigation uses","confidence":0.99,"source":"https://www.azwater.gov/ama/active-management-area-overview"},
+    {"id":"CGAZ-003","domain":"water_supply","parameter":"Assured Water Supply horizon","value":"100 years","confidence":0.99,"source":"https://www.azwater.gov/aaws/aaws-overview"},
+    {"id":"CGAZ-004","domain":"water_supply","parameter":"Arizona Water Company Pinal designation","value":"100-year Assured Water Supply designation announced March 2026","confidence":0.99,"source":"https://www.azwater.gov/news/articles/2026-03-05"},
+    {"id":"CGAZ-005","domain":"pretreatment","parameter":"Industrial users subject to pretreatment","value":true,"confidence":0.99,"source":"https://www.casagrandeaz.gov/649/Industrial-Pretreatment-Program"},
+    {"id":"CGAZ-006","domain":"pretreatment","parameter":"Discharge authorization required before industrial discharge","value":true,"confidence":0.99,"source":"https://www.casagrandeaz.gov/649/Industrial-Pretreatment-Program"},
+    {"id":"CGAZ-007","domain":"pretreatment","parameter":"SIU process-flow threshold","value":"25,000 gpd average process wastewater","confidence":0.98,"source":"https://casagrandeaz.gov/DocumentCenter/View/2978/SWMP-2024"},
+    {"id":"CGAZ-008","domain":"pretreatment","parameter":"SIU POTW capacity-share threshold","value":"5% of average dry-weather hydraulic or organic capacity","confidence":0.98,"source":"https://casagrandeaz.gov/DocumentCenter/View/2978/SWMP-2024"},
+    {"id":"CGAZ-009","domain":"pretreatment","parameter":"Local limits used","value":"Yes — to control specific pollutants and protect the POTW","confidence":0.99,"source":"https://www.casagrandeaz.gov/649/Industrial-Pretreatment-Program"},
+    {"id":"CGAZ-010","domain":"wastewater_capacity","parameter":"Phase 4A APP treatment-capacity update basis","value":"18 MGD project-basis target; not represented as final current permit limit","confidence":0.95,"source":"https://casagrandeaz.gov/DocumentCenter/View/4146"},
+    {"id":"CGAZ-011","domain":"permitting","parameter":"Phase 4A AZPDES update","value":"Included for increased effluent discharge","confidence":0.95,"source":"https://casagrandeaz.gov/DocumentCenter/View/4146"},
+    {"id":"CGAZ-012","domain":"wastewater_capacity","parameter":"Phase 4A incremental capacity and cost","value":"8 MGD; approximately $35M project cost reported","confidence":0.95,"source":"https://casagrandeaz.gov/DocumentCenter/View/4146"},
+    {"id":"CGAZ-013","domain":"pretreatment","parameter":"Local Limits Study refresh","value":"New study warranted after Phase 4A; prior analysis relied on 2017 study with 2024 extrapolation","confidence":0.97,"source":"https://casagrandeaz.gov/DocumentCenter/View/4146"},
+    {"id":"CGAZ-014","domain":"wastewater_capacity","parameter":"Draft APP Phase 1 max average monthly flow","value":"14.5 MGD — draft significant amendment","confidence":0.92,"source":"https://static.azdeq.gov/pn/app_casagrandewrf_dp.pdf"},
+    {"id":"CGAZ-015","domain":"wastewater_capacity","parameter":"Draft APP Phase 2 max average monthly flow","value":"20.3 MGD — draft significant amendment","confidence":0.92,"source":"https://static.azdeq.gov/pn/app_casagrandewrf_dp.pdf"},
+    {"id":"CGAZ-016","domain":"permitting","parameter":"Proposed AZPDES renewal discharge","value":"Up to 14 MGD — proposed renewal permit","confidence":0.92,"source":"https://static.azdeq.gov/pn/azpdes_casagrande_wrf_pn.pdf"},
+    {"id":"CGAZ-017","domain":"reuse","parameter":"Reuse permit reference","value":"R105677 listed in ADEQ fact sheet; refresh required before current-use reliance","confidence":0.90,"source":"https://static.azdeq.gov/pn/%E2%80%A2%20Old%20-%20Check%20then%20remove/190110_casagrande_fs.pdf"},
+    {"id":"CGAZ-018","domain":"reuse","parameter":"Historical treated-effluent uses","value":"Plant water and golf-course irrigation; remaining flow historically pumped to on-site ponds","confidence":0.88,"source":"https://static.azdeq.gov/pn/%E2%80%A2%20Old%20-%20Check%20then%20remove/190110_casagrande_fs.pdf"}
+  ]
+}
