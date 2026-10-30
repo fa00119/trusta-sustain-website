@@ -13,8 +13,11 @@
     const text = (link.textContent || '').trim().slice(0,120);
     if (href.includes('buy.stripe.com') || href.includes('book.stripe.com')) {
       track('begin_checkout', { link_url: href, link_text: text, page_path: location.pathname });
-    } else if (href.startsWith('/self-service') || href.startsWith('/instant-assessment') || href.startsWith('/roi-calculator') || href.startsWith('/infrastructure-assessment') || href.startsWith('/value-opportunity-prioritizer')) {
+    } else if (href.startsWith('/self-service') || href.startsWith('/instant-assessment') || href.startsWith('/roi-calculator') || href.startsWith('/infrastructure-assessment') || href.startsWith('/value-opportunity-prioritizer') || href.startsWith('/orbit-readiness')) {
       track('self_service_start', { destination: href, link_text: text, page_path: location.pathname });
+      if (href.startsWith('/orbit-readiness')) track('orbit_readiness_start', { source_path: location.pathname });
+    } else if (href.includes('orbit.trusta-sustain.com')) {
+      track('orbit_live_demo_open', { link_url: href, link_text: text, page_path: location.pathname });
     } else if (href.startsWith('mailto:growth@')) {
       track('enterprise_contact_intent', { link_text: text, page_path: location.pathname });
     } else if (href.includes('app.trusta-sustain.com')) {
@@ -76,6 +79,16 @@
 
   const path = window.location.pathname;
 
+  if (path.endsWith('/orbit-readiness.html') || path === '/orbit-readiness') {
+    const form = document.querySelector('#f');
+    if (form && !form.dataset.analyticsBound) {
+      form.dataset.analyticsBound = 'true';
+      form.addEventListener('submit', () => {
+        track('orbit_readiness_complete', { source_path: path });
+      });
+    }
+  }
+
   if (path.endsWith('/self-service.html') || path === '/self-service') {
     const grid = document.querySelector('.page-hero .lab-grid');
     const addToolCard = (href, title, copy, eyebrow) => {
@@ -87,25 +100,26 @@
       card.innerHTML = `<h3>${title}</h3><p>${copy}</p><span class="eyebrow">${eyebrow} →</span>`;
       grid.appendChild(card);
     };
-    addToolCard('/infrastructure-assessment.html','ORBIT Infrastructure Readiness','Score system mapping, capacity evidence, dependencies, operating data, economics, resilience, and decision controls before paying for deeper analysis.','Run screening');
+    addToolCard('/orbit-readiness.html','ORBIT Evidence Readiness','Score evidence lineage, comparison basis, cross-utility constraints, uncertainty and verification readiness before paying for a Site Screen.','Run ORBIT readiness');
+    addToolCard('/infrastructure-assessment.html','Infrastructure Readiness','Score system mapping, capacity evidence, dependencies, operating data, economics, resilience, and decision controls before paying for deeper analysis.','Run screening');
     addToolCard('/value-opportunity-prioritizer.html','YIELD Value Opportunity Prioritizer','Compare modeled benefit, implementation cost, payback, difficulty, risk, and evidence confidence while keeping forecast value distinct from realized value.','Prioritize opportunities');
     return;
   }
 
-  // ORBIT should offer a no-login screening before asking for a paid diagnostic or enterprise scope.
+  // ORBIT should offer a no-login evidence screen before asking for a paid diagnostic or enterprise scope.
   if (path.endsWith('/orbit.html') || path === '/orbit') {
     const heroActions = document.querySelector('.page-hero .actions');
-    if (heroActions && !heroActions.querySelector('a[href="/infrastructure-assessment.html"]')) {
-      heroActions.innerHTML = '<a class="btn btn-accent" href="/infrastructure-assessment.html">Run free infrastructure screening</a><a class="btn" href="#commercial">Commercial paths</a>';
+    if (heroActions && !heroActions.querySelector('a[href="/orbit-readiness.html"]')) {
+      heroActions.innerHTML = '<a class="btn btn-accent" href="/orbit-readiness.html">Check ORBIT evidence readiness</a><a class="btn" href="https://orbit.trusta-sustain.com" target="_blank" rel="noopener">Open Live ORBIT Demo</a><a class="btn" href="#screen">See Site Screen</a>';
     }
-    const commercial = document.querySelector('#commercial .container');
-    if (commercial && !commercial.querySelector('[data-orbit-screening]')) {
-      const screening = document.createElement('div');
-      screening.className = 'card';
-      screening.dataset.orbitScreening = 'true';
-      screening.style.marginTop = '18px';
-      screening.innerHTML = '<span class="eyebrow">Self-service first</span><h3>Infrastructure Decision Readiness Screening</h3><p>Before paying for a diagnostic, score system mapping, capacity evidence, dependencies, operating data, economics, resilience and decision controls. Get an instant readiness score, evidence gaps and recommended next step.</p><div class="actions"><a class="btn btn-accent" href="/infrastructure-assessment.html">Run free · 5–8 min</a></div>';
-      commercial.appendChild(screening);
+    const screen = document.querySelector('#screen .container');
+    if (screen && !screen.querySelector('[data-orbit-readiness]')) {
+      const readiness = document.createElement('div');
+      readiness.className = 'card';
+      readiness.dataset.orbitReadiness = 'true';
+      readiness.style.marginTop = '18px';
+      readiness.innerHTML = '<span class="eyebrow">Self-service first</span><h3>ORBIT Evidence Readiness Assessment</h3><p>Before paying for a Site Screen, test whether the decision has a defensible scope, comparison basis, source evidence, explicit uncertainty and a future verification path. No login or email required.</p><div class="actions"><a class="btn btn-accent" href="/orbit-readiness.html">Run free · 5–8 min</a><a class="btn" href="https://orbit.trusta-sustain.com" target="_blank" rel="noopener">Inspect Live Demo</a></div>';
+      screen.appendChild(readiness);
     }
     return;
   }
