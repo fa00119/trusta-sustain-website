@@ -9,6 +9,9 @@ from urllib.error import HTTPError, URLError
 
 TARGETS = [
     ("https://trusta-sustain.com/", "Fixed scope and fee confirmed in a written proposal"),
+    ("https://trusta-sustain.com/", "Decide with clarity."),
+    ("https://trusta-sustain.com/", "PowerOS synthetic demo"),
+    ("https://trusta-sustain.com/", "CONFORM synthetic demo"),
     ("https://trusta-sustain.com/contact.html", "Request an ORBIT screen"),
     ("https://trusta-sustain.com/products.html", "Decide. Model. Verify. Learn."),
     ("https://trusta-sustain.com/poweros.html", "Request a guided PowerOS demo"),
