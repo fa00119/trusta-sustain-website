@@ -1,0 +1,23 @@
+name: Trusta hero product flow visual QA
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'assets/hero-product-flow.css'
+      - 'tools/qa_hero_product_flow.cjs'
+      - '.github/workflows/hero-product-flow-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  visual-flow:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0'
+      - run: npm install --no-save --no-audit --no-fund playwright@1.56.1
+      - run: npx playwright install chromium
+      - run: node tools/qa_hero_product_flow.cjs
