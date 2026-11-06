@@ -1,0 +1,53 @@
+name: Public site release smoke
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/public-site-release-smoke.yml'
+      - 'index.html'
+      - 'about.html'
+      - 'trusta-platform.html'
+      - 'contact.html'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-live-check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check published site with bounded retries
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import time
+          from urllib.request import Request, urlopen
+          from urllib.error import URLError
+          base='https://trusta-sustain.com'
+          routes={
+            '/': ('ORBIT','PowerOS','CONFORM','/trusta-platform.html'),
+            '/about.html': ('TrustaSustain','Company capabilities'),
+            '/trusta-platform.html': ('Energy Value Assessment','UNVERIFIABLE','growth@trusta-sustain.com'),
+            '/contact.html': ('/trusta-platform.html#assessment','growth@trusta-sustain.com')
+          }
+          last={}
+          for attempt in range(1,8):
+            failed=[]
+            for route,need in routes.items():
+              try:
+                req=Request(base+route,headers={'User-Agent':'TrustaSiteReleaseSmoke/1.0','Cache-Control':'no-cache'})
+                with urlopen(req,timeout=12) as response:
+                  data=response.read(1500000).decode('utf-8','replace')
+                  code=response.status
+                if code!=200 or any(x not in data for x in need) or 'Farhad Azarmi' in data:
+                  failed.append((route,code,[x for x in need if x not in data], 'personal-name-present' if 'Farhad Azarmi' in data else ''))
+              except Exception as e: failed.append((route,str(e)[:160]))
+            if not failed:
+              print('LIVE RELEASE SMOKE PASS: all four public URLs, key product copy, and personal-name boundaries validated')
+              print('NOT TESTED: browser visual QA on published host, independent mail delivery by clicking link, full WCAG/security.')
+              break
+            last={'attempt':attempt,'failures':failed}
+            print('Live release not ready:',last,flush=True)
+            if attempt<7: time.sleep(15)
+          else: raise SystemExit('LIVE RELEASE SMOKE HOLD: expected site version not proven')
+          PY
