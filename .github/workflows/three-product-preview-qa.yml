@@ -1,0 +1,26 @@
+name: Three-product preview source QA
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'about.html'
+      - 'contact.html'
+      - 'trusta-platform.html'
+      - 'sitemap.xml'
+      - 'tools/check_three_product_preview.py'
+      - '.github/workflows/three-product-preview-qa.yml'
+  push:
+    branches:
+      - 'launch/three-product-preview-20261105'
+jobs:
+  source-qa:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 tools/check_three_product_preview.py
