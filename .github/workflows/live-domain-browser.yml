@@ -1,0 +1,27 @@
+name: Live domain Chromium validation
+on:
+  pull_request:
+    paths:
+      - 'tools/live-domain-browser.cjs'
+      - '.github/workflows/live-domain-browser.yml'
+permissions:
+  contents: read
+jobs:
+  chromium-live:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-audit --no-fund playwright@1.56.1
+      - run: npx playwright install chromium
+      - run: node tools/live-domain-browser.cjs
+      - name: Upload real-public-domain screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trusta-live-domain-screenshots
+          path: artifacts/live-release/
+          if-no-files-found: ignore
