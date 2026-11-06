@@ -1,0 +1,42 @@
+name: Three-product preview browser QA
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'about.html'
+      - 'contact.html'
+      - 'trusta-platform.html'
+      - 'assets/**'
+      - 'tools/launch-preview-browser.cjs'
+      - '.github/workflows/launch-preview-browser.yml'
+  push:
+    branches:
+      - launch/three-product-preview-20261105
+permissions:
+  contents: read
+jobs:
+  browser-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-audit --no-fund playwright@1.56.1
+      - run: npx playwright install chromium
+      - name: Browser and responsive smoke checks
+        shell: bash
+        run: |
+          python3 -m http.server 8766 --bind 127.0.0.1 >/tmp/trusta-preview-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 2
+          node tools/launch-preview-browser.cjs
+      - name: Upload screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trusta-launch-preview-screens
+          path: artifacts/launch-preview/
+          if-no-files-found: ignore
