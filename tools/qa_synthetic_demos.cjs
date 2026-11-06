@@ -11,7 +11,7 @@ const assert = require("node:assert/strict");
     await page.getByText("SYNTHETIC / ILLUSTRATIVE").waitFor();
     const initial = await page.locator("#outCost").innerText();
     assert.match(initial,/12,480/);
-    await page.locator("#change").fill("10");
+    await page.locator("#change").evaluate(el => {el.value="10";el.dispatchEvent(new Event("input",{bubbles:true}));});
     assert.match(await page.locator("#outCost").innerText(),/15,600/);
     assert.equal(errors.length,0,"PowerOS page errors: "+errors.join(","));
     await page.goto("file://" + path.resolve("conform-demo.html"));
