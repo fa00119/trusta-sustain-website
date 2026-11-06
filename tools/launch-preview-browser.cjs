@@ -13,19 +13,21 @@ fs.mkdirSync(art, { recursive: true });
 async function check(browser, viewport, label) {
   const context = await browser.newContext({ viewport, reducedMotion: 'reduce' });
   const page = await context.newPage();
+  // CI should validate first-party HTML/CSS/JS without hanging on external NASA or analytics resources.
+  await page.route('**/*', route => { const url=route.request().url(); return url.startsWith(base+'/') ? route.continue() : route.abort(); });
   const runtimeErrors = [];
   page.on('pageerror', e => runtimeErrors.push(String(e)));
   for (const path of paths) {
-    const result = await page.goto(base + path, { waitUntil: 'load', timeout: 30000 });
+    const result = await page.goto(base + path, { waitUntil: 'domcontentloaded', timeout: 30000 });
     assert.equal(result.status(), 200, label + ' ' + path + ' HTTP status');
     assert(((await page.title()) || '').trim().length > 0, label + ' ' + path + ' title');
     const hasName = await page.getByText('Farhad Azarmi', { exact: false }).count();
     assert.equal(hasName, 0, label + ' ' + path + ' personal display name');
     const overflow = await page.evaluate(() => ({scroll: document.documentElement.scrollWidth, window: innerWidth}));
     if(overflow.scroll > overflow.window + 3) failures.push(label + ' ' + path + ' horizontal overflow ' + JSON.stringify(overflow));
-    await page.screenshot({ path: art + '/' + label + '-' + (path === '/' ? 'index' : path.replace(/\W/g, '-')) + '.png', fullPage:true });
+    await page.screenshot({ timeout:15000, path: art + '/' + label + '-' + (path === '/' ? 'index' : path.replace(/\W/g, '-')) + '.png', fullPage:true });
   }
-  await page.goto(base + '/trusta-platform.html', { waitUntil: 'load' });
+  await page.goto(base + '/trusta-platform.html', { waitUntil: 'domcontentloaded' });
   for (const text of ['ORBIT', 'PowerOS', 'CONFORM', 'UNVERIFIABLE', 'Request an Energy Value Assessment']) {
     assert(await page.getByText(text, { exact: false }).count() > 0, label + ' missing product or assurance phrase: ' + text);
   }
@@ -38,7 +40,7 @@ async function check(browser, viewport, label) {
   assert.equal(new URL(page.url()).hash, '#assessment', label + ' assessment anchor failed');
   const q = await page.locator('#assessment').count();
   assert.equal(q, 1, label + ' assessment id missing or duplicate');
-  await page.goto(base + '/', {waitUntil:'load'});
+  await page.goto(base + '/', {waitUntil:'domcontentloaded'});
   assert(await page.locator('a[href="/trusta-platform.html"]').count() > 0, label + ' homepage platform navigation missing');
   if(runtimeErrors.length) failures.push(label + ' JS exceptions: ' + runtimeErrors.join('; '));
   await context.close();
