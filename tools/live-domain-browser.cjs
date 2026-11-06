@@ -11,7 +11,7 @@ fs.mkdirSync(out,{recursive:true});
    const context=await browser.newContext({viewport,reducedMotion:'reduce',ignoreHTTPSErrors:false});
    const page=await context.newPage();
    // External font/analytics services must not prevent proving first-party site behavior.
-   await page.route('**/*', route => {try {const u=new URL(route.request().url);return u.hostname==='trusta-sustain.com' ? route.continue() : route.abort();} catch {return route.abort();}});
+   await page.route('**/*', route => {if(route.request().isNavigationRequest())return route.continue();const u=route.request().url();return /googletagmanager|google-analytics|fonts\\.googleapis|fonts\\.gstatic/.test(u) ? route.abort() : route.continue();});
    for(const path of ['/', '/about.html','/contact.html','/trusta-platform.html']){
     const response=await page.goto(BASE+path,{waitUntil:'domcontentloaded',timeout:30000});
     assert.equal(response.status(),200,label+' '+path+' status');
