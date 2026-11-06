@@ -18,7 +18,7 @@ async function check(browser, viewport, label) {
   for (const path of paths) {
     const result = await page.goto(base + path, { waitUntil: 'load', timeout: 30000 });
     assert.equal(result.status(), 200, label + ' ' + path + ' HTTP status');
-    assert(!((await page.title()) || '').trim().length === 0, label + ' ' + path + ' title');
+    assert(((await page.title()) || '').trim().length > 0, label + ' ' + path + ' title');
     const hasName = await page.getByText('Farhad Azarmi', { exact: false }).count();
     assert.equal(hasName, 0, label + ' ' + path + ' personal display name');
     const overflow = await page.evaluate(() => ({scroll: document.documentElement.scrollWidth, window: innerWidth}));
