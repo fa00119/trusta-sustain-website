@@ -24,7 +24,14 @@ async function check(browser, viewport, label) {
     const hasName = await page.getByText('Farhad Azarmi', { exact: false }).count();
     assert.equal(hasName, 0, label + ' ' + path + ' personal display name');
     const overflow = await page.evaluate(() => ({scroll: document.documentElement.scrollWidth, window: innerWidth}));
-    if(overflow.scroll > overflow.window + 3) failures.push(label + ' ' + path + ' horizontal overflow ' + JSON.stringify(overflow));
+    if (overflow.scroll > overflow.window + 3) {
+      const offenders = await page.evaluate(() => [...document.querySelectorAll('body *')].map(el => {
+        const b=el.getBoundingClientRect();const cs=getComputedStyle(el);
+        return {tag:el.tagName.toLowerCase(),cls:(el.className||'').toString().slice(0,100),id:el.id, left:Math.round(b.left),right:Math.round(b.right),width:Math.round(b.width),position:cs.position,overflow:cs.overflowX};
+      }).filter(z => z.right > innerWidth + 3 || z.left < -3).sort((a,b)=>b.right-a.right).slice(0,16));
+      console.error('OVERFLOW DIAGNOSTIC',label,path,JSON.stringify(offenders));
+      failures.push(label + ' ' + path + ' horizontal overflow ' + JSON.stringify(overflow));
+    }
     await page.screenshot({ timeout:15000, path: art + '/' + label + '-' + (path === '/' ? 'index' : path.replace(/\W/g, '-')) + '.png', fullPage:true });
   }
   await page.goto(base + '/trusta-platform.html', { waitUntil: 'domcontentloaded' });
