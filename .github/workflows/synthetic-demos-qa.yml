@@ -1,0 +1,27 @@
+name: Synthetic product demos interaction QA
+on:
+  pull_request:
+    paths:
+      - 'poweros-demo.html'
+      - 'conform-demo.html'
+      - 'poweros.html'
+      - 'conform.html'
+      - 'products.html'
+      - 'tools/qa_synthetic_demos.cjs'
+      - '.github/workflows/synthetic-demos-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0'
+      - run: npm install --no-save --no-audit --no-fund playwright@1.56.1
+      - run: npx playwright install chromium
+      - name: Test synthetic PowerOS and CONFORM interactions
+        run: node tools/qa_synthetic_demos.cjs
