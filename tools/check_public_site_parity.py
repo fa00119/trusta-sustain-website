@@ -13,6 +13,8 @@ TARGETS = [
     ("https://trusta-sustain.com/products.html", "Decide. Model. Verify. Learn."),
     ("https://trusta-sustain.com/poweros.html", "Request a guided PowerOS demo"),
     ("https://trusta-sustain.com/conform.html", "Request a guided CONFORM demo"),
+    ("https://trusta-sustain.com/poweros-demo.html", "SYNTHETIC / ILLUSTRATIVE"),
+    ("https://trusta-sustain.com/conform-demo.html", "SYNTHETIC EXAMPLE ONLY"),
 ]
 for url, marker in TARGETS:
     req = urllib.request.Request(url, headers={
