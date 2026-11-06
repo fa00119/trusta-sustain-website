@@ -1,0 +1,17 @@
+/* Premium luminous infrastructure network. Restores the original hero layout without cards. */
+.hero-v2 .premium-network-visual{position:relative;isolation:isolate;overflow:hidden;min-width:0;height:510px;min-height:0;display:block;transform:none;contain:layout paint}
+.hero-v2 .premium-network-visual:before{content:"";position:absolute;inset:8% 0;background:radial-gradient(ellipse 55% 50% at 55% 48%,rgba(35,154,188,.24),transparent 80%);pointer-events:none}
+.network-art{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;pointer-events:none}
+.network-canvas{display:block;width:100%;height:100%;max-width:none;overflow:visible;filter:drop-shadow(0 0 16px rgba(87,217,218,.22))}
+.network-canvas .network-nodes circle{animation:network-luminous 5.5s ease-in-out infinite}
+.network-canvas .network-nodes circle:nth-child(5n){animation-delay:-2.4s}
+.network-canvas .network-orbits{animation:network-orbit-breathe 10s ease-in-out infinite}
+.network-canvas .network-mesh{animation:network-mesh-breathe 9s ease-in-out infinite}
+.premium-network-visual .solution-rail{pointer-events:auto}
+@keyframes network-luminous{0%,100%{opacity:.83}50%{opacity:1}}
+@keyframes network-orbit-breathe{0%,100%{opacity:.13}50%{opacity:.27}}
+@keyframes network-mesh-breathe{0%,100%{opacity:.12}50%{opacity:.24}}
+@media(max-width:1180px){.hero-v2 .premium-network-visual{height:410px;max-width:100%;margin:0}}
+@media(max-width:900px){.hero-v2 .premium-network-visual{height:360px;max-width:100%;width:100%;margin:0;grid-column:1;justify-self:stretch;z-index:0}.premium-network-visual .solution-rail{display:none}.network-art{inset:0}}
+@media(max-width:580px){.hero-v2-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:0}.hero-v2 .hero-copy{min-width:0;padding-bottom:12px}.hero-v2 .premium-network-visual{position:relative;display:block;grid-column:1;align-self:start;height:285px;margin:16px 0 10px;border-radius:22px;border:1px solid rgba(83,194,199,.18);background:radial-gradient(ellipse at 52% 42%,rgba(20,106,133,.27),rgba(2,17,25,.25) 66%,transparent)}.network-art{inset:0}.network-canvas{width:100%;height:100%;filter:drop-shadow(0 0 17px rgba(89,231,220,.32))}.home-demo-links{position:relative;z-index:2}.hero-v2 .hero-copy .actions{position:relative;z-index:2}}
+@media(prefers-reduced-motion:reduce){.network-canvas .network-nodes circle,.network-canvas .network-orbits,.network-canvas .network-mesh{animation:none!important}.network-moving-pulses{display:none}}
