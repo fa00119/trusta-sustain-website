@@ -49,6 +49,14 @@ async function check(browser, viewport, label) {
   assert.equal(q, 1, label + ' assessment id missing or duplicate');
   await page.goto(base + '/', {waitUntil:'domcontentloaded'});
   assert(await page.locator('a[href="/trusta-platform.html"]').count() > 0, label + ' homepage platform navigation missing');
+  // The existing site.js adds navigation links dynamically; test expanded keyboard/menu behavior.
+  const toggle = page.locator('button.menu');
+  assert(await toggle.isVisible(), label + ' menu toggle not visible at this viewport');
+  await toggle.click();
+  assert.equal(await toggle.getAttribute('aria-expanded'), 'true', label + ' menu failed to open');
+  assert(await page.locator('.nav-links').isVisible(), label + ' menu content not visible');
+  await page.keyboard.press('Escape');
+  assert.equal(await toggle.getAttribute('aria-expanded'), 'false', label + ' menu did not close with Escape');
   if(runtimeErrors.length) failures.push(label + ' JS exceptions: ' + runtimeErrors.join('; '));
   await context.close();
 }
