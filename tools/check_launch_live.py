@@ -6,6 +6,8 @@ targets={
  "https://trusta-sustain.com/launch-offers.html":["Evidence Triage","Scenario &amp; Data Review","Focused Infrastructure Diagnostic","From $1,500","From $3,500","From $6,500","Request written quote"],
  "https://trusta-sustain.com/partners.html":["10–15%","net cash actually collected","written agreement","No government procurement kickbacks"],
  "https://trusta-sustain.com/vendor-evidence-readiness.html":["Vendor Performance Evidence Readiness","Six checks before presenting results","Request a paid evidence review","not an accredited verification"],
+ "https://trusta-sustain.com/evidence-mini-scan.html":["From $499","one claim","no instant purchase"],
+ "https://trusta-sustain.com/trust-center.html":["Confidence should come from evidence","CONFORM","SOC 2","Do not email confidential"],
  "https://trusta-sustain.com/":["/launch-offers.html","/partners.html"]
 }
 for url,required in targets.items():
