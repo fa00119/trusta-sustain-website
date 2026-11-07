@@ -11,7 +11,7 @@
 <div class="cf-field"><label for="cf-reduction">Potential gross emissions reduction (tCO₂e/year)</label><input id="cf-reduction" type="number" min="0" max="100000000" step="100" value="1800"><small class="cf-help">Modeled only; reductions cannot exceed baseline in calculations</small></div>
 <div class="cf-field"><label for="cf-capex">Illustrative one-time project cost (USD)</label><input id="cf-capex" type="number" min="0" max="1000000000" step="1000" value="125000"></div>
 <div class="cf-field"><label for="cf-incentive">Hypothetical incentive amount (USD)</label><input id="cf-incentive" type="number" min="0" max="1000000000" step="1000" value="25000"><small class="cf-help">Not verified eligibility, availability or award</small></div></div>
-<div class="cf-card"><h2>Model transparency</h2><div class="cf-ribbon"><strong>Assumed covered emissions</strong><p id="cf-covered">—</p><strong>Assumed payable tonnes before / after</strong><p id="cf-tonnes">—</p><strong>Net illustrative project cost</strong><p id="cf-cost">—</p></div><div class="cf-bar" aria-hidden="true"><div id="cf-reduction-bar"></div></div><p id="cf-summary" aria-live="polite">Scenario updates after input changes.</p><div class="cf-ribbon"><strong>Explicit model equations</strong><p class="cf-formula">payable_before = max(0, baseline × covered_fraction − allowances)</p><p class="cf-formula">payable_after = max(0, max(0,baseline − reduction) × covered_fraction − allowances)</p><p class="cf-formula">modeled_value = (payable_before − payable_after) × assumed_price</p><p class="cf-formula">net_project_cost = max(0, capital_cost − hypothetical_incentive)</p></div><p>This simplified model intentionally excludes transaction costs, time value of money, baseline drift, allocation rules, jurisdiction-specific compliance obligations, leakage, rebound, tax treatment and verification. Free allowances, carbon taxes, offset credits and CBAM certificates are not interchangeable legal instruments.</p></div></div></div>
+<div class="cf-card"><h2>Model transparency</h2><div class="cf-ribbon"><strong>Assumed covered emissions</strong><p id="cf-covered">—</p><strong>Assumed payable tonnes before / after</strong><p id="cf-tonnes">—</p><strong>Net illustrative project cost</strong><p id="cf-cost">—</p></div><div class="cf-bar" aria-hidden="true"><div id="cf-reduction-bar"></div></div><p id="cf-summary" aria-live="polite">Scenario updates after input changes.</p><button type="button" id="cf-download" style="border:1px solid #82e8cd;border-radius:10px;padding:12px 16px;background:#83eacc;color:#072920;font-weight:800;cursor:pointer;margin:10px 0">Download synthetic decision brief (.txt) ↓</button><p class="cf-help">Local report export: calculations, assumptions and limitations; no data is sent to Trusta.</p><div class="cf-ribbon"><strong>Explicit model equations</strong><p class="cf-formula">payable_before = max(0, baseline × covered_fraction − allowances)</p><p class="cf-formula">payable_after = max(0, max(0,baseline − reduction) × covered_fraction − allowances)</p><p class="cf-formula">modeled_value = (payable_before − payable_after) × assumed_price</p><p class="cf-formula">net_project_cost = max(0, capital_cost − hypothetical_incentive)</p></div><p>This simplified model intentionally excludes transaction costs, time value of money, baseline drift, allocation rules, jurisdiction-specific compliance obligations, leakage, rebound, tax treatment and verification. Free allowances, carbon taxes, offset credits and CBAM certificates are not interchangeable legal instruments.</p></div></div></div>
 <div class="cf-panel" id="cf-offset" role="tabpanel" aria-labelledby="cf-tab-offset"><div class="cf-grid"><div class="cf-card"><h2>Fictional offset integrity screening</h2><p>Tick only if a reviewed document supports each proposition. This is a classroom-like screening—not a registry lookup, legal claim approval or a purchase recommendation.</p><div class="cf-checklist" id="cf-offset-checks">
 <label><input type="checkbox" data-offset="registry"> <span>Registry and project ID are independently traceable<small>Registry, program, project ID and issuance source are identified</small></span></label>
 <label><input type="checkbox" data-offset="serial"> <span>Serial/vintage and issuance/retirement status documented<small>Not merely a broker spreadsheet or promotional statement</small></span></label>
@@ -35,6 +35,50 @@ const ids=['emissions','price','coverage','free','reduction','capex','incentive'
 function read(id){const x=document.getElementById('cf-'+id),n=Number(x.value);const max=Number(x.max);return Number.isFinite(n)?Math.max(0,Math.min(max,n)):0}
 function calculate(){const e=read('emissions'),p=read('price'),coverage=read('coverage')/100,allowances=read('free'),reduction=Math.min(read('reduction'),e),cost=read('capex'),incentive=read('incentive');const before=Math.max(0,e*coverage-allowances),after=Math.max(0,(e-reduction)*coverage-allowances);const gross=before*p,net=after*p,value=(before-after)*p;document.getElementById('cf-gross').textContent=money(gross);document.getElementById('cf-net').textContent=money(net);document.getElementById('cf-avoided').textContent=money(value);document.getElementById('cf-covered').textContent=num(e*coverage)+' tCO₂e/year (assumed)';document.getElementById('cf-tonnes').textContent=num(before)+' / '+num(after)+' tCO₂e/year';document.getElementById('cf-cost').textContent=money(Math.max(0,cost-incentive))+' (before operating costs)';document.getElementById('cf-reduction-bar').style.width=(e?Math.min(100,100*reduction/e):0)+'%';document.getElementById('cf-summary').textContent='Projected '+num(reduction)+' tCO₂e reduction · '+money(value)+' modeled annual avoided exposure. No assumption about actual jurisdiction eligibility, realised abatement, carbon-credit sale, offset claim or incentive award.'}
 ids.forEach(id=>document.getElementById('cf-'+id).addEventListener('input',calculate));calculate();
+document.getElementById('cf-download').addEventListener('click',()=>{
+ const values=Object.fromEntries(ids.map(id=>[id,read(id)]));
+ const lines=[
+  'TRUSTASUSTAIN | ESI SYNTHETIC CARBON DECISION BRIEF',
+  'CLASSIFICATION: ILLUSTRATIVE / SIMULATED — NOT VERIFIED, NOT LEGAL OR TAX ADVICE',
+  'Generated from browser-local example inputs. No information was uploaded.',
+  '',
+  'INPUTS & UNITS',
+  'Annual emissions baseline (tCO2e/year): '+values.emissions,
+  'Assumed carbon price (USD/tCO2e): '+values.price,
+  'Assumed coverage (%): '+values.coverage,
+  'Assumed allocated allowance (tCO2e/year): '+values.free,
+  'Proposed reduction (tCO2e/year): '+Math.min(values.reduction,values.emissions),
+  'Project cost assumed (USD): '+values.capex,
+  'Hypothetical incentive amount (USD): '+values.incentive,
+  '',
+  'MODELED OUTPUTS (not realized, billable or creditable)',
+  'Gross exposure (USD/year): '+document.getElementById('cf-gross').textContent,
+  'Net exposure after modeled reduction (USD/year): '+document.getElementById('cf-net').textContent,
+  'Illustrative avoided exposure (USD/year): '+document.getElementById('cf-avoided').textContent,
+  'Estimated capital cost net of hypothetical incentive: '+document.getElementById('cf-cost').textContent,
+  '',
+  'METHODOLOGY',
+  'payable_before = max(0, baseline*covered_fraction - allowance)',
+  'payable_after = max(0, max(0,baseline-reduction)*covered_fraction - allowance)',
+  'modeled_value = (payable_before-payable_after)*assumed_price',
+  'net_capital_cost = max(0, project_cost-hypothetical_incentive)',
+  '',
+  'CAVEATS',
+  'Regime coverage, statutory tax liability, market allowance rules and CBAM certificates differ.',
+  'Offsets cannot be assumed to satisfy compliance or emissions claims.',
+  'Incentive eligibility, legislation, stacking and program validity were not checked.',
+  'No source emissions factor, meter calibration, project performance, legal status or reporting result has been independently verified.',
+  'Requires site-specific technical review, current official sources and qualified counsel/CPA/assurer where needed.',
+  '',
+  'Source: Trusta ESI browser-only illustrative model. https://trusta-sustain.com/esi-financial-lab.html'
+ ];
+ const file=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});
+ const u=URL.createObjectURL(file);
+ const a=document.createElement('a');a.href=u;a.download='trusta-esi-synthetic-carbon-decision-brief.txt';
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(u),1000);
+});
+
 const offsetInputs=[...document.querySelectorAll('#cf-offset-checks input')];function updateOffsets(){const n=offsetInputs.filter(x=>x.checked).length;document.getElementById('cf-offset-count').textContent=n+' / '+offsetInputs.length+' categories checked';document.getElementById('cf-offset-text').textContent=n===offsetInputs.length?'All fictional categories are selected. Document authenticity, methodology, ownership and claims still need independent expert review. Status remains UNCERTAIN.':'Missing '+(offsetInputs.length-n)+' categories. Further documentation and independent review are necessary.'}offsetInputs.forEach(i=>i.addEventListener('change',updateOffsets));updateOffsets();
 const incentiveInputs=[...document.querySelectorAll('#cf-incentive-checks input')];function updateIncentives(){const n=incentiveInputs.filter(x=>x.checked).length;document.getElementById('cf-incentive-count').textContent=n+' of '+incentiveInputs.length+' documentation categories marked';document.getElementById('cf-incentive-bar').style.width=100*n/incentiveInputs.length+'%';document.getElementById('cf-incentive-next').textContent=n===incentiveInputs.length?'Documentation self-check completed. Actual incentive availability and eligibility remain UNVERIFIED.':'Documentation groups still incomplete. Please confirm project facts and program rules with the administering authority.'}incentiveInputs.forEach(i=>i.addEventListener('change',updateIncentives));updateIncentives()})();
 </script><script src="/assets/site.js" defer></script></body></html>

@@ -1,0 +1,28 @@
+name: ESI synthetic decision report export QA
+on:
+  pull_request:
+    paths:
+      - 'esi-financial-lab.html'
+      - 'scripts/esi-report-export.test.mjs'
+      - '.github/workflows/esi-report-export.yml'
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.61.0
+      - run: npx playwright install --with-deps chromium
+      - name: Simulated scenario report download and disclosure QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 33232 --bind 127.0.0.1 > /tmp/esi-report-static.log 2>&1 &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+          for i in {1..30}; do if curl -fsS http://127.0.0.1:33232/esi-financial-lab.html >/dev/null; then break; fi; sleep 0.3; done
+          node scripts/esi-report-export.test.mjs
