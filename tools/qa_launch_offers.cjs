@@ -19,7 +19,7 @@ const sleep=t=>new Promise(r=>setTimeout(r,t));
      const body=await page.locator("body").innerText();assert.ok(body.includes("10–15%")&&body.includes("net cash actually collected"));assert.ok(body.includes("written agreement")&&body.includes("No government procurement kickbacks"));
    }
    if(pathname==="/evidence-mini-scan.html"){ const body=await page.locator("body").innerText();for(const term of ["$499","one claim","three references","quotation only"]){assert.ok(body.toLowerCase().includes(term.toLowerCase()),term);}assert.equal(await page.locator('a[href^="mailto:growth@trusta-sustain.com"]').count()>=2,true);}
-   if(pathname==="/trust-center.html"){const body=await page.locator("body").innerText();for(const term of ["Trust Center","synthetic","SOC 2","customer","security"]){assert.ok(body.toLowerCase().includes(term.toLowerCase()),term)}}
+   if(pathname==="/trust-center.html"){const body=await page.locator("body").innerText();for(const term of ["Confidence should come from evidence","synthetic","SOC 2","customer","security"]){assert.ok(body.toLowerCase().includes(term.toLowerCase()),term)}}
    if(pathname==="/"){assert.equal(await page.locator('a[href="/launch-offers.html"]').count()>=1,true);assert.equal(await page.locator('a[href="/partners.html"]').count()>=1,true);}
   }
   console.log("PASS GTM quote-only pages and links "+width+"px");
