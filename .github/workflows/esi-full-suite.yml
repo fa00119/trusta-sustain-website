@@ -1,0 +1,35 @@
+name: ESI full catalog and scenario QA
+on:
+  pull_request:
+    paths:
+      - 'esi-services.html'
+      - 'esi-financial-lab.html'
+      - 'environmental-sustainability.html'
+      - 'index.html'
+      - 'products.html'
+      - 'launch-offers.html'
+      - 'partners.html'
+      - 'contact.html'
+      - 'scripts/esi-full-suite.test.mjs'
+      - '.github/workflows/esi-full-suite.yml'
+jobs:
+  full-esi:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.61.0
+      - run: npx playwright install --with-deps chromium
+      - name: Serve local static site and verify ESI flows
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 33231 --bind 127.0.0.1 >/tmp/esi-static.log 2>&1 &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+          for i in {1..25}; do if curl -fsS http://127.0.0.1:33231/esi-services.html >/dev/null; then break; fi; sleep 0.3; done
+          node scripts/esi-full-suite.test.mjs
