@@ -1,0 +1,84 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GHG Scope 1, 2 &amp; 3 Evidence Readiness Explorer | TrustaSustain</title>
+<meta name="description" content="Explore which source records can support GHG Scope 1, Scope 2 and Scope 3 data readiness. An illustrative browser-only self-assessment; not GHG assurance or certification.">
+<link rel="canonical" href="https://trusta-sustain.com/esi-evidence-explorer.html"><link rel="icon" href="/assets/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=20261028d">
+<style>.ex-section{padding:66px 0}.ex-hero h1{font-size:clamp(2.6rem,5.8vw,4.7rem)}.ex-hero p{max-width:850px;color:#bed3d7;font-size:1.08rem}.ex-layout{display:grid;grid-template-columns:1.2fr 1fr;gap:23px}.ex-panel{background:#0d2029;border:1px solid #285260;border-radius:19px;padding:25px}.ex-panel h2{font-size:1.5rem}.ex-question{display:flex;gap:13px;align-items:flex-start;padding:13px 2px;border-bottom:1px solid #28424a;cursor:pointer}.ex-question input{margin-top:5px;width:18px;height:18px;accent-color:#7de2ca;flex-shrink:0}.ex-question strong{display:block}.ex-question small{display:block;color:#bacfd3;line-height:1.45;margin-top:3px}.ex-tabs{display:flex;flex-wrap:wrap;gap:9px;margin:20px 0}.ex-tab{padding:9px 15px;color:#d5f1e9;background:#13303a;border:1px solid #31505b;border-radius:30px;cursor:pointer}.ex-tab[aria-selected=true]{background:#84e6cb;color:#06161b;font-weight:800}.ex-result{border:1px solid #46777b;background:#12303a;border-radius:15px;padding:16px;margin:16px 0}.ex-progress{height:13px;border-radius:10px;background:#213b42;overflow:hidden}.ex-progress>div{background:#83e9c9;height:100%;width:0;transition:width .2s}.ex-note{font-size:.86rem;color:#bdccd0}.ex-next{padding-left:18px}.ex-next li{margin-bottom:9px}.ex-footer{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}.ex-footer button{border:1px solid #42616b;border-radius:10px;padding:11px 14px;cursor:pointer;color:#e4f8f5;background:#18323c;font-weight:700}.ex-footer button:hover,.ex-tab:hover{outline:2px solid #87e9cf;outline-offset:2px}.ex-plain{border:1px solid #35535d;border-radius:13px;padding:15px;color:#cbdee0}.ex-intro{margin-bottom:24px}a.ex-link{color:#8cebd2;text-decoration:underline}@media(max-width:800px){.ex-layout{grid-template-columns:1fr}.ex-section{padding:40px 0}}@media(prefers-reduced-motion:reduce){.ex-progress>div{transition:none}}</style></head><body>
+<header class="nav"><div class="container nav-inner"><a class="brand" href="/"><span class="mark"></span><span>TRUSTA SUSTAIN</span></a><button class="menu" aria-label="Open navigation">☰</button><nav class="nav-links"><a href="/products.html">Technology</a><a href="/environmental-sustainability.html">Environmental &amp; ESG</a><a href="/partners.html">Partners</a><a class="btn btn-accent" href="/contact.html">Contact</a></nav></div></header>
+<main><section class="ex-section ex-hero"><div class="container"><span class="eyebrow">ESI · Illustrative interactive explorer</span><h1>What evidence could support<br>your GHG inventory?</h1><p>This non-commercial, browser-only checklist demonstrates the kinds of source records that an industrial Scope 1, Scope 2 or Scope 3 review may require. Check only documents your team can actually substantiate. No uploads, account access or emissions calculation is performed.</p><p class="ex-note">Prototype only. Checklist completion is not an ESG score, regulatory-compliance opinion, verification, assurance statement or indication of bank acceptance. No data leaves this browser from this checklist.</p>
+<div class="ex-layout">
+<section class="ex-panel" aria-labelledby="scopeTitle"><h2 id="scopeTitle">Choose an evidence category</h2><div role="tablist" aria-label="GHG scope" class="ex-tabs">
+<button type="button" role="tab" class="ex-tab" id="scope1" aria-selected="true" aria-controls="scope-panel" data-scope="1">Scope 1</button>
+<button type="button" role="tab" class="ex-tab" id="scope2" aria-selected="false" aria-controls="scope-panel" data-scope="2">Scope 2</button>
+<button type="button" role="tab" class="ex-tab" id="scope3" aria-selected="false" aria-controls="scope-panel" data-scope="3">Scope 3</button></div><div id="scope-panel" role="tabpanel" aria-labelledby="scope1"></div>
+</section>
+<aside class="ex-panel" aria-labelledby="readinessTitle"><h2 id="readinessTitle">Evidence checklist status</h2><div class="ex-result" aria-live="polite"><strong id="progressLabel">0 of 0 evidence groups marked present</strong><div class="ex-progress" aria-hidden="true" style="margin-top:12px"><div id="progressBar"></div></div><p id="statusText" class="ex-note">This measures only checklist selections, not assurance readiness or evidence accuracy.</p></div>
+<h3>Records to request next</h3><ol id="nextRecords" class="ex-next"></ol>
+<div class="ex-plain"><strong>What a scoped Trusta assessment adds</strong><p>A qualified reviewer can assess actual organizational boundaries, metering/invoice consistency, factor versions, uncertainty, Scope 3 relevance and evidence provenance. Actual suitability depends on reporting framework, period and jurisdiction.</p></div>
+<div class="ex-footer"><button type="button" id="copySummary">Copy selected checklist summary</button><button type="button" id="clearSelection">Reset selections</button></div>
+<p id="copyNotice" class="ex-note" aria-live="polite"></p>
+<a class="btn btn-accent" href="mailto:growth@trusta-sustain.com?subject=GHG%20Scope%201-2-3%20Evidence%20Assessment" style="display:inline-block;margin-top:14px">Request a real scoped evidence review →</a>
+</aside></div>
+<p class="ex-note ex-intro" style="margin-top:25px">This is a static demonstration of document types, not an emissions inventory, software certification or comprehensive professional checklist. If your records are confidential, do not enter or send them here. <a class="ex-link" href="/environmental-sustainability.html">See Trusta ESI service boundaries.</a></p>
+</div></section></main><footer class="footer"><div class="container"><p>© TrustaSustain Corporation · <a href="/products.html">ORBIT, PowerOS &amp; CONFORM</a> · <a href="/contact.html">Contact</a></p></div></footer>
+<script>
+(function(){
+"use strict";
+const groups={
+"1":{name:"Scope 1 — direct emissions",items:[
+["Fuel and combustion activity records","Fuel invoices, metered use and equipment/source inventory for relevant stationary and mobile combustion."],
+["Process and fugitive source records","Relevant process production/activity, refrigerant additions/leaks and applicable treatment-process records."],
+["Factors and organizational boundaries","Applicable emission factors, gases/GWP versions, source ownership and reporting-period boundaries."],
+["Independent reconciliation inputs","Maintenance, meter calibration, usage reconciliations and known data-quality exceptions."]]},
+"2":{name:"Scope 2 — purchased energy",items:[
+["Purchased electricity / energy invoices","Electricity, heat, steam or cooling amounts by period, site and supplier, as applicable."],
+["Meter and facility mapping","Meter IDs, tenant/site boundaries, submeter allocation and accounting period."],
+["Location-based factor provenance","Grid factor source, region, data vintage and units for relevant periods."],
+["Market-based instruments and claims","Contracts, certificates or other contractual instruments and checks for applicability, residual mix and claim consistency."]]},
+"3":{name:"Scope 3 — value-chain emissions",items:[
+["Relevant category screening","Applicability review across the 15 categories, boundary choices and materiality assumptions."],
+["Purchased goods and supplier primary evidence","Supplier activity or product emissions evidence, methodology, facility boundaries and vintage for relevant categories."],
+["Transport, waste and downstream sources","Carrier, waste contractor, sold product, use/end-of-life or other category-specific activity as relevant."],
+["Estimation and allocation register","Secondary factors, spend/activity methods, double-counting/allocations, uncertainty and missing-data notes."]]}};
+const state={"1":new Set(),"2":new Set(),"3":new Set()};
+let scope="1";
+const tabs=[...document.querySelectorAll('[data-scope]')];
+const panel=document.getElementById("scope-panel");
+function render(){
+ const g=groups[scope];
+ tabs.forEach(t=>{const active=t.dataset.scope===scope;t.setAttribute("aria-selected",String(active));t.tabIndex=active?0:-1;});
+ panel.setAttribute("aria-labelledby","scope"+scope);
+ panel.replaceChildren();
+ const h=document.createElement("h3");h.textContent=g.name;panel.appendChild(h);
+ g.items.forEach(([title,details],i)=>{
+  const label=document.createElement("label");label.className="ex-question";
+  const input=document.createElement("input");input.type="checkbox";input.checked=state[scope].has(i);
+  input.addEventListener("change",()=>{if(input.checked)state[scope].add(i);else state[scope].delete(i);updateStatus();});
+  const span=document.createElement("span");const strong=document.createElement("strong");strong.textContent=title;const small=document.createElement("small");small.textContent=details;span.append(strong,small);label.append(input,span);panel.appendChild(label);
+ });
+ updateStatus();
+}
+function updateStatus(){
+ const g=groups[scope],count=state[scope].size,total=g.items.length;
+ document.getElementById("progressLabel").textContent=count+" of "+total+" evidence groups marked present";
+ document.getElementById("progressBar").style.width=(100*count/total)+"%";
+ document.getElementById("statusText").textContent="Self-declared selection only. Records have not been uploaded, checked or independently verified.";
+ const list=document.getElementById("nextRecords");list.replaceChildren();
+ g.items.forEach(([title],i)=>{if(!state[scope].has(i)){const li=document.createElement("li");li.textContent=title;list.appendChild(li);}});
+ if(count===total){const li=document.createElement("li");li.textContent="All groups selected. A qualified reviewer must still examine actual evidence, relevance, factor quality and uncertainty.";list.appendChild(li);}
+}
+tabs.forEach(t=>{
+ t.addEventListener("click",()=>{scope=t.dataset.scope;render();});
+ t.addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();const idx=tabs.indexOf(t);const next=tabs[(idx+(e.key==="ArrowRight"?1:tabs.length-1))%tabs.length];next.focus();scope=next.dataset.scope;render();}});
+});
+document.getElementById("clearSelection").addEventListener("click",()=>{Object.values(state).forEach(s=>s.clear());document.getElementById("copyNotice").textContent="Selections cleared.";render();});
+document.getElementById("copySummary").addEventListener("click",()=>{
+ const lines=["Trusta ESI illustrative GHG evidence checklist — self-declared, NOT verified"];
+ for(const [key,g] of Object.entries(groups)){lines.push(g.name);g.items.forEach(([name],i)=>lines.push((state[key].has(i)?"[present] ":"[not selected] ")+name));}
+ const txt=lines.join("\n");
+ if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(txt).then(()=>document.getElementById("copyNotice").textContent="Summary copied. No files were collected.",()=>document.getElementById("copyNotice").textContent="Copy unavailable in this browser.").catch(()=>{});}
+ else{document.getElementById("copyNotice").textContent="Clipboard API unavailable. Use a secure browser to copy.";}
+});
+render();
+})();
+</script><script src="/assets/site.js" defer></script></body></html>
