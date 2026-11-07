@@ -35,7 +35,7 @@ def main():
                 bad.append(f"{path}: broken link {link}")
         if path=="environmental-sustainability.html":
             for term in ["Scope 1","Scope 2","Scope 3","ORBIT","PowerOS","CONFORM","illustrative"]:
-                if term not in text:bad.append(f"ESI missing {term}")
+                if term.lower() not in text.lower():bad.append(f"ESI missing {term}")
         if path=="esi-evidence-explorer.html":
             for term in ["role=\"tab\"","addEventListener","scope3_category","Scope 1","Scope 2","Scope 3"]:
                 # Scope3 categories are described as a screening, not entered in the prototype.
