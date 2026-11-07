@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'launch-offers.html'
+      - 'evidence-mini-scan.html'
       - 'partners.html'
       - 'assets/launch-growth.css'
       - 'index.html'
