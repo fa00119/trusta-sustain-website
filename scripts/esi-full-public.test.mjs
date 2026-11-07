@@ -1,0 +1,35 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+const browser = await chromium.launch({headless:true});
+try {
+ const page=await browser.newPage({viewport:{width:390,height:844}});
+ const errs=[];page.on('pageerror',e=>errs.push(e.message));
+ const base='https://trusta-sustain.com';
+ const a=await page.goto(base+'/esi-services.html',{waitUntil:'load'});
+ assert.equal(a?.status(),200);
+ await page.locator('article.es-card').first().waitFor();
+ assert.equal(await page.locator('article.es-card').count(),22);
+ await page.getByRole('button',{name:'Finance & Incentives'}).click();
+ assert.equal(await page.locator('article.es-card').count(),3);
+ await page.getByRole('button',{name:'All',exact:true}).click();
+ await page.locator('#es-search').fill('carbon tax');
+ assert.ok(await page.locator('article.es-card').count()>=1);
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+3),false);
+ const b=await page.goto(base+'/esi-financial-lab.html',{waitUntil:'load'});
+ assert.equal(b?.status(),200);
+ await page.locator('#cf-gross').waitFor();
+ assert.equal(await page.locator('#cf-gross').innerText(),'$494,000');
+ assert.equal(await page.locator('#cf-avoided').innerText(),'$93,600');
+ await page.getByRole('tab',{name:/Offset integrity/}).click();
+ for(const i of await page.locator('#cf-offset-checks input').all())await i.check();
+ assert.equal(await page.locator('#cf-offset-status').innerText(),'UNCERTAIN');
+ await page.getByRole('tab',{name:/Incentive evidence/}).click();
+ assert.equal(await page.locator('#cf-incentive-checks input').count(),6);
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+3),false);
+ const c=await page.goto(base+'/environmental-sustainability.html',{waitUntil:'load'});
+ assert.equal(c?.status(),200);
+ assert.ok(await page.locator('a[href="/esi-services.html"]').count()>0);
+ assert.ok(await page.locator('a[href="/esi-financial-lab.html"]').count()>0);
+ assert.deepEqual(errs,[]);
+ console.log('ESI production catalog, carbon economics, offset/incentives, mobile UI: PASS');
+}finally {await browser.close()}
