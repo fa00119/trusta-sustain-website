@@ -4,6 +4,7 @@ on:
     paths:
       - 'launch-offers.html'
       - 'evidence-mini-scan.html'
+      - 'trust-center.html'
       - 'partners.html'
       - 'assets/launch-growth.css'
       - 'index.html'
