@@ -1,0 +1,19 @@
+name: Trusta new offers public deployment parity
+on:
+  pull_request:
+    paths:
+      - 'tools/check_launch_live.py'
+      - '.github/workflows/launch-live-parity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  parity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python tools/check_launch_live.py
