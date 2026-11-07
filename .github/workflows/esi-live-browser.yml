@@ -1,0 +1,21 @@
+name: ESI live browser release QA
+on:
+  pull_request:
+    paths:
+      - 'scripts/esi-live-browser.test.mjs'
+      - '.github/workflows/esi-live-browser.yml'
+  workflow_dispatch:
+jobs:
+  live-browser:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.61.0
+      - run: npx playwright install --with-deps chromium
+      - name: Live mobile Chromium source and interaction QA
+        run: node scripts/esi-live-browser.test.mjs
