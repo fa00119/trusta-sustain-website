@@ -1,0 +1,30 @@
+name: ESI public website release probe
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/esi-public-release-probe.yml'
+  workflow_dispatch:
+jobs:
+  public-pages:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Verify public ESI routes and release content
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://trusta-sustain.com'
+          for path in environmental-sustainability.html esi-evidence-explorer.html; do
+            echo "Checking $base/$path"
+            curl --retry 3 --retry-delay 2 --connect-timeout 8 --max-time 25 -fSL -D "/tmp/${path}.headers" "$base/$path" -o "/tmp/${path}.html"
+            grep -qi '<html' "/tmp/${path}.html"
+            grep -qi 'Scope 1' "/tmp/${path}.html"
+            grep -qi 'Scope 2' "/tmp/${path}.html"
+            grep -qi 'Scope 3' "/tmp/${path}.html"
+            grep -q 'growth@trusta-sustain.com' "/tmp/${path}.html"
+            echo "$path: live and contains GHG and CTA"
+          done
+          grep -q 'Environmental Compliance Rescue' /tmp/environmental-sustainability.html
+          grep -q 'TrustaSustain' /tmp/esi-evidence-explorer.html
+          echo 'Public website ESI gate PASSED'
