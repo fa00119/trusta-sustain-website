@@ -12,7 +12,7 @@ try {
  await page.getByRole('button',{name:'Finance & Incentives'}).click();
  assert.equal(await page.locator('article.es-card').count(),3);
  await page.getByRole('button',{name:'All',exact:true}).click();
- await page.locator('#es-search').fill('carbon tax');
+ await page.locator('#es-search').fill('carbon');
  assert.ok(await page.locator('article.es-card').count()>=1);
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+3),false);
  const b=await page.goto(base+'/esi-financial-lab.html',{waitUntil:'load'});
