@@ -1,0 +1,20 @@
+name: CONFORM public production ESI QA
+on:
+  pull_request:
+    paths:
+      - 'scripts/conform-public-esi.test.mjs'
+      - '.github/workflows/conform-public-esi.yml'
+  workflow_dispatch:
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.61.0
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/conform-public-esi.test.mjs
