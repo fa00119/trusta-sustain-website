@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Monthly Multi-Site Decision Dashboard | Trusta Sustain</title>
+  <meta name="description" content="Track site decisions, evidence gaps, forecast and measured value, and monthly actions in a browser-based ORBIT dashboard.">
+  <link rel="canonical" href="https://trusta-sustain.com/decision-portfolio.html">
+  <link rel="icon" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/energy-scan.css?v=2">
+  <link rel="stylesheet" href="/assets/portfolio-evidence.css">
+  <script defer src="/assets/decision-portfolio.js"></script>
+</head>
+<body>
+  <header class="nav"><div class="container nav-inner">
+    <a class="brand" href="/"><span class="mark"></span><span>Trusta Sustain</span></a>
+    <button class="menu" aria-label="Open navigation">☰</button>
+    <nav class="nav-links" aria-label="Main navigation"><a href="/solutions.html">Services</a><a href="/products.html">Products</a><a href="/decision-evidence.html">Evidence</a></nav>
+  </div></header>
+  <main>
+    <section class="page-hero"><div class="container">
+      <h1>Track decisions across your sites.</h1>
+      <p class="lead">See which projects need evidence, which are approved, and where measured results are available. Use one reporting month and USD for each comparison.</p>
+      <div class="actions"><a class="btn btn-accent" href="#monthly-review">Open dashboard</a><a class="btn" href="/orbit-portfolio-monitor.html">Explore managed portfolio monitoring</a></div>
+    </div></section>
+    <section class="section" id="monthly-review"><div class="container">
+      <h2>Monthly decision review</h2>
+      <p>Try the illustrative records or create your own. Entries stay in this browser tab. Save a JSON file and reopen it to continue on another visit. Keep the file in an approved location.</p>
+      <div class="actions dashboard-tools">
+        <button class="btn" type="button" id="portfolio-demo">Load demo</button>
+        <button class="btn" type="button" id="portfolio-export">Save records as JSON</button>
+        <label>Open saved records <input type="file" id="portfolio-import" accept=".json,application/json"></label>
+      </div>
+      <p id="portfolio-feedback" role="status"></p>
+      <div class="scan-periods portfolio-filters">
+        <label>Reporting month <input type="month" id="portfolio-month" required></label>
+        <label>Site <select id="portfolio-site"><option value="">All sites</option></select></label>
+      </div>
+      <div class="grid grid-3 portfolio-metrics" id="portfolio-metrics" aria-live="polite"></div>
+      <p class="small">Forecast totals include approved decisions and decisions with recorded outcomes. Measured totals include recorded outcomes only. The comparable forecast covers those same outcomes. Count each benefit once across projects.</p>
+      <div class="portfolio-table" tabindex="0" role="region" aria-label="Monthly decisions">
+        <table class="scan-table"><thead><tr><th scope="col">Site and decision</th><th scope="col">Status</th><th scope="col">Forecast</th><th scope="col">Measured</th><th scope="col">Next step</th><th scope="col">Edit</th></tr></thead><tbody id="portfolio-rows"></tbody></table>
+      </div>
+      <div class="actions"><button class="btn" type="button" id="portfolio-print">Print monthly review</button><a class="btn" href="/decision-review.html#request">Discuss a managed review</a></div>
+      <form id="portfolio-form">
+        <fieldset class="card"><legend id="portfolio-form-title">Add a decision for this month</legend>
+          <div class="scan-periods">
+            <label>Site name <input name="site" required maxlength="80"></label>
+            <label>Decision <input name="decision" required maxlength="140"></label>
+            <label>Status <select name="status"><option value="pending">Awaiting evidence</option><option value="approved">Approved</option><option value="measured">Outcome recorded</option></select></label>
+            <label>Forecast value this month ($) <input name="forecast" type="number" min="0" max="1000000000" step=".01" required></label>
+            <label>Measured value this month ($) <input name="measured" type="number" min="-1000000000" max="1000000000" step=".01" disabled></label>
+            <label>Next decision or evidence needed <input name="next" maxlength="200"></label>
+          </div>
+          <label id="portfolio-basis-label" hidden><input type="checkbox" name="comparable" disabled> Measured and forecast values use the same scope and reporting period.</label>
+          <div class="actions"><button class="btn btn-accent" type="submit">Save decision</button><button class="btn" type="reset">Clear form</button><button class="btn" id="portfolio-remove" type="button" hidden>Remove selected decision</button></div>
+        </fieldset>
+      </form>
+    </div></section>
+  </main>
+  <footer class="footer"><div class="container"><div class="legal"><span>© 2026 TrustaSustain Corporation</span><a href="/contact.html">Contact</a></div></div></footer>
+  <script src="/assets/site.js"></script>
+</body>
+</html>
