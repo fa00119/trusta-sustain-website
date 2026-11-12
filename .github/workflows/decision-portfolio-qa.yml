@@ -1,0 +1,74 @@
+name: Decision portfolio browser QA
+on:
+  pull_request:
+    paths:
+      - decision-portfolio.html
+      - assets/decision-portfolio.js
+      - assets/portfolio-evidence.css
+      - .github/workflows/decision-portfolio-qa.yml
+permissions:
+  contents: read
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --no-save playwright@1.61.0
+      - run: npx playwright install --with-deps chromium
+      - name: Verify mixed provenance, filters, JSON and print
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 &
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import { readFile } from 'node:fs/promises';
+          import { chromium } from 'playwright';
+
+          const browser = await chromium.launch();
+          try {
+            const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+            await page.goto('http://127.0.0.1:8765/decision-portfolio.html');
+            const rows = page.locator('#portfolio-rows');
+            const metrics = page.locator('#portfolio-metrics');
+            const importRecords = records => page.locator('#portfolio-import').setInputFiles({
+              name: 'test.json',
+              mimeType: 'application/json',
+              buffer: Buffer.from(JSON.stringify({ version: 1, records }))
+            });
+            const entered = { month: '2026-10', site: 'Illustrative Site A', decision: 'QA fixture',
+              status: 'measured', forecast: 500, measured: 350, next: '' };
+            await page.locator('#portfolio-demo').click();
+            await importRecords([entered]);
+            await rows.getByText(/QA fixture/).waitFor();
+            assert.deepEqual(await metrics.locator('strong').allTextContents(),
+              ['$500.00', '$350.00', '$500.00', '$3,350.00', '$1,680.00', '$2,400.00']);
+            await page.locator('#portfolio-site').selectOption('Illustrative Site A');
+            assert.deepEqual(await metrics.locator('strong').allTextContents(),
+              ['$500.00', '$350.00', '$500.00', '$2,400.00', '$1,680.00', '$2,400.00']);
+            await importRecords([{ ...entered, decision: 'Invalid negative forecast', forecast: -1 }]);
+            await page.getByText(/Could not open this file/).waitFor();
+            assert.equal(await rows.getByText(/Invalid negative forecast/).count(), 0);
+            const [download] = await Promise.all([
+              page.waitForEvent('download'), page.locator('#portfolio-export').click()
+            ]);
+            const exported = JSON.parse(await readFile(await download.path(), 'utf8'));
+            assert.equal(exported.records.filter(record => record.sample === true).length, 3);
+            assert.equal(exported.records.find(record => record.decision === entered.decision).sample, undefined);
+            await page.reload();
+            await importRecords(exported.records);
+            await rows.getByText(/QA fixture/).waitFor();
+            assert.equal(await rows.getByText(/\(illustrative\)/).count(), 3);
+            await page.locator('#portfolio-month').fill('2026-09');
+            await rows.getByText(/No decisions/).waitFor();
+            await page.locator('#portfolio-month').fill('2026-10');
+            await rows.getByText(/QA fixture/).waitFor();
+            assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+            const pdf = await page.pdf({ format: 'A4' });
+            assert.equal(pdf.subarray(0, 5).toString(), '%PDF-');
+            console.log('Mixed totals, month/site filters, invalid import, JSON round trip, mobile width and PDF passed.');
+          } finally {
+            await browser.close();
+          }
+          JS
