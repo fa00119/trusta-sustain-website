@@ -1,0 +1,28 @@
+.portfolio-table { overflow-x: auto; }
+.portfolio-table table { min-width: 690px; }
+.portfolio-filters select, #portfolio-form select {
+  display: block;
+  width: 100%;
+  padding: .65rem;
+  background: #081920;
+  color: #f3fffc;
+  border: 1px solid #7899a2;
+  border-radius: .5rem;
+  font: inherit;
+}
+.dashboard-tools, .portfolio-metrics, #portfolio-form { margin: 1.25rem 0; }
+.portfolio-metrics .card { padding: 1rem; }
+.portfolio-metrics strong { display: block; font-size: 1.45rem; }
+.evidence-definitions dt { font-weight: 700; }
+.evidence-definitions dd { margin: .3rem 0 1rem; }
+.evidence-definitions dd:last-child { margin-bottom: 0; }
+.service-group { margin-top: 2rem; }
+
+@media print {
+  .dashboard-tools, .portfolio-filters, #portfolio-form, #monthly-review .actions,
+  .portfolio-table th:last-child, .portfolio-table td:last-child { display: none !important; }
+  .portfolio-table { overflow: visible; }
+  .portfolio-table table { min-width: 0; }
+  .sample-sheet + .sample-sheet { break-before: page; }
+  body, main, main * { background: white !important; color: black !important; }
+}
