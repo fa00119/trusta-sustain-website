@@ -68,3 +68,21 @@
   #scan-report { padding: 0; }
   .scan-table tr { break-inside: avoid; }
 }
+
+
+.scan-unit {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.scan-unit select {
+  display: block;
+  max-width: 100%;
+  margin-top: .3rem;
+  padding: .6rem;
+  border: 1px solid #7899a2;
+  border-radius: .5rem;
+  background: #081920;
+  color: #f3fffc;
+  font: inherit;
+}

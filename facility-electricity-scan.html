@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Facility Electricity Bill Analyzer | Trusta Sustain</title>
+  <meta name="description" content="Compare two facility electricity bills for free. See changes in usage, demand charges, and electricity cost per unit of activity.">
+  <link rel="canonical" href="https://trusta-sustain.com/facility-electricity-scan.html">
+  <link rel="icon" href="/assets/favicon.svg">
+  <meta property="og:title" content="Why did your facility’s electricity bill change?">
+  <meta property="og:description" content="Compare two bills and get a printable first-pass cost breakdown.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://trusta-sustain.com/facility-electricity-scan.html">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/energy-scan.css?v=2">
+  <script src="/assets/energy-scan.js?v=2" defer></script>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="/"><span class="mark"></span><span>Trusta Sustain</span></a>
+      <button class="menu" aria-label="Open navigation">☰</button>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="/products.html">Products</a>
+        <a href="/self-service.html">Self-service</a>
+        <a href="/solutions.html">Services</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <h1>Why did your facility’s electricity bill change?</h1>
+        <p class="lead">Compare two electricity bills for a factory, warehouse, hotel, commercial laundry, or other facility. See what changed in daily usage, billed charges, and cost per unit of activity.</p>
+        <div class="actions"><a class="btn btn-accent" href="#scan">Compare my bills</a><button class="btn" id="load-example" type="button">Try factory sample</button></div>
+      </div>
+    </section>
+    <section class="section" id="scan" aria-labelledby="scan-title">
+      <div class="container">
+        <h2 id="scan-title">Enter two billing periods</h2>
+        <p>Use current-period electricity charges in USD, excluding prior balances and payments. Enter zero for an itemized charge only if the bill shows it as zero. If you enter an activity measure, use the same unit in both periods.</p>
+        <p class="small">The scan runs in your browser. It does not upload your entries or require an account.</p>
+        <form id="bill-scan" data-sample="factory" novalidate>
+          <label class="scan-unit">Activity unit (optional)
+            <select name="activity-unit">
+              <option value="tons">Tons handled</option>
+              <option value="pounds">Pounds processed</option>
+              <option value="units" selected>Units produced</option>
+              <option value="orders">Orders shipped</option>
+              <option value="visits">Customer visits</option>
+              <option value="room nights">Occupied room nights</option>
+              <option value="operating hours">Operating hours</option>
+            </select>
+          </label>
+          <div class="scan-periods">
+          <fieldset class="card"><legend>Earlier bill</legend>
+            <label>Billing days<input type="number" inputmode="numeric" name="earlier-days" min="1" max="366" step="1" required></label>
+            <label>Electricity use (kWh)<input type="number" inputmode="decimal" name="earlier-usage" min="0" max="1000000000" step="any" required></label>
+            <label>Total electricity bill ($)<input type="number" inputmode="decimal" name="earlier-total" min="0" max="1000000000" step="0.01" required></label>
+            <label>Usage-based charges ($) (optional)<input type="number" inputmode="decimal" name="earlier-energy" min="0" max="1000000000" step="0.01"></label>
+            <label>Demand charges ($) (optional)<input type="number" inputmode="decimal" name="earlier-demand" min="0" max="1000000000" step="0.01"></label>
+            <label>Activity quantity (optional)<input type="number" inputmode="decimal" name="earlier-output" min="0" max="1000000000" step="any"></label>
+          </fieldset>
+          <fieldset class="card"><legend>Recent bill</legend>
+            <label>Billing days<input type="number" inputmode="numeric" name="recent-days" min="1" max="366" step="1" required></label>
+            <label>Electricity use (kWh)<input type="number" inputmode="decimal" name="recent-usage" min="0" max="1000000000" step="any" required></label>
+            <label>Total electricity bill ($)<input type="number" inputmode="decimal" name="recent-total" min="0" max="1000000000" step="0.01" required></label>
+            <label>Usage-based charges ($) (optional)<input type="number" inputmode="decimal" name="recent-energy" min="0" max="1000000000" step="0.01"></label>
+            <label>Demand charges ($) (optional)<input type="number" inputmode="decimal" name="recent-demand" min="0" max="1000000000" step="0.01"></label>
+            <label>Activity quantity (optional)<input type="number" inputmode="decimal" name="recent-output" min="0" max="1000000000" step="any"></label>
+          </fieldset>
+          </div>
+          <p id="scan-error" role="alert" hidden></p>
+          <div class="actions"><button class="btn btn-accent" type="submit">Analyze bills</button><button class="btn" type="reset">Clear inputs</button></div>
+        </form>
+        <noscript><p>Enable JavaScript to run the bill comparison.</p></noscript>
+      </div>
+    </section>
+    <section class="section band" id="scan-report" aria-labelledby="report-title" hidden>
+      <div class="container">
+        <h2 id="report-title" tabindex="-1">Facility electricity cost report</h2>
+        <p id="scan-summary"></p>
+        <table class="scan-table">
+          <thead><tr><th scope="col">Metric</th><th scope="col">Earlier</th><th scope="col">Recent</th><th scope="col">Change</th></tr></thead>
+          <tbody id="scan-metrics"></tbody>
+        </table>
+        <h3>What changed on the bill</h3>
+        <ul id="scan-changes"></ul>
+        <p class="small">This comparison describes bill changes. To establish causes or estimate savings, review tariffs, interval meter readings, and operating conditions.</p>
+        <div class="actions">
+          <button class="btn" id="scan-print" type="button">Print / save PDF</button>
+          <a class="btn btn-accent" id="scan-paid-cta" href="/industrial-energy-operating-cost-analysis.html#request">Request a paid facility analysis</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="container"><div class="legal"><span>© 2026 TrustaSustain Corporation</span><a href="/self-service.html">Self-service tools</a></div></div></footer>
+  <script src="/assets/site.js"></script>
+</body>
+</html>
