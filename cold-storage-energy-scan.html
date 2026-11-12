@@ -12,8 +12,8 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://trusta-sustain.com/cold-storage-energy-scan.html">
   <link rel="stylesheet" href="/assets/styles.css">
-  <link rel="stylesheet" href="/assets/energy-scan.css">
-  <script src="/assets/energy-scan.js" defer></script>
+  <link rel="stylesheet" href="/assets/energy-scan.css?v=2">
+  <script src="/assets/energy-scan.js?v=2" defer></script>
 </head>
 <body>
   <header class="nav">
@@ -38,9 +38,20 @@
     <section class="section" id="scan" aria-labelledby="scan-title">
       <div class="container">
         <h2 id="scan-title">Enter two billing periods</h2>
-        <p>Use current-period electricity charges in USD, excluding prior balances and payments. Enter zero for an itemized charge only if the bill shows it as zero. Use the same throughput definition in both periods.</p>
+        <p>Use current-period electricity charges in USD, excluding prior balances and payments. Enter zero for an itemized charge only if the bill shows it as zero. If you enter an activity measure, use the same unit in both periods.</p>
         <p class="small">The scan runs in your browser. It does not upload your entries or require an account.</p>
         <form id="bill-scan" novalidate>
+          <label class="scan-unit">Activity unit (optional)
+            <select name="activity-unit">
+              <option value="tons" selected>Tons handled</option>
+              <option value="pounds">Pounds processed</option>
+              <option value="units">Units produced</option>
+              <option value="orders">Orders shipped</option>
+              <option value="visits">Customer visits</option>
+              <option value="room nights">Occupied room nights</option>
+              <option value="operating hours">Operating hours</option>
+            </select>
+          </label>
           <div class="scan-periods">
           <fieldset class="card"><legend>Earlier bill</legend>
             <label>Billing days<input type="number" inputmode="numeric" name="earlier-days" min="1" max="366" step="1" required></label>
@@ -48,7 +59,7 @@
             <label>Total electricity bill ($)<input type="number" inputmode="decimal" name="earlier-total" min="0" max="1000000000" step="0.01" required></label>
             <label>Usage-based charges ($) (optional)<input type="number" inputmode="decimal" name="earlier-energy" min="0" max="1000000000" step="0.01"></label>
             <label>Demand charges ($) (optional)<input type="number" inputmode="decimal" name="earlier-demand" min="0" max="1000000000" step="0.01"></label>
-            <label>Throughput (tons) (optional)<input type="number" inputmode="decimal" name="earlier-output" min="0" max="1000000000" step="any"></label>
+            <label>Activity quantity (optional)<input type="number" inputmode="decimal" name="earlier-output" min="0" max="1000000000" step="any"></label>
           </fieldset>
           <fieldset class="card"><legend>Recent bill</legend>
             <label>Billing days<input type="number" inputmode="numeric" name="recent-days" min="1" max="366" step="1" required></label>
@@ -56,7 +67,7 @@
             <label>Total electricity bill ($)<input type="number" inputmode="decimal" name="recent-total" min="0" max="1000000000" step="0.01" required></label>
             <label>Usage-based charges ($) (optional)<input type="number" inputmode="decimal" name="recent-energy" min="0" max="1000000000" step="0.01"></label>
             <label>Demand charges ($) (optional)<input type="number" inputmode="decimal" name="recent-demand" min="0" max="1000000000" step="0.01"></label>
-            <label>Throughput (tons) (optional)<input type="number" inputmode="decimal" name="recent-output" min="0" max="1000000000" step="any"></label>
+            <label>Activity quantity (optional)<input type="number" inputmode="decimal" name="recent-output" min="0" max="1000000000" step="any"></label>
           </fieldset>
           </div>
           <p id="scan-error" role="alert" hidden></p>

@@ -6,10 +6,24 @@
   const changes = document.getElementById('scan-changes');
   const error = document.getElementById('scan-error');
   const fields = ['days', 'usage', 'total', 'energy', 'demand', 'output'];
-  const example = {
+  const coldStorageExample = {
     earlier: [30, 120000, 18000, 12000, 4500, 1000],
     recent: [30, 114000, 18900, 11970, 5400, 900]
   };
+  const factoryExample = {
+    earlier: [30, 90000, 12500, 8100, 3300, 50000],
+    recent: [32, 96000, 14000, 9120, 3700, 48000]
+  };
+  const unitLabels = {
+    tons: 'ton',
+    pounds: 'pound',
+    units: 'unit produced',
+    orders: 'order shipped',
+    visits: 'customer visit',
+    'room nights': 'occupied room night',
+    'operating hours': 'operating hour'
+  };
+  const unitInput = form.elements.namedItem('activity-unit');
   const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
   const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
   const rate = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 4 });
@@ -75,8 +89,9 @@
       addFinding('Enter the usage-based and demand charge amounts from both bills to reconcile the full bill change.');
     }
     if (earlier.output > 0 && recent.output > 0) {
-      addMetric('Throughput (tons)', earlier.output, recent.output);
-      addMetric('Electricity cost per ton', earlier.total / earlier.output, recent.total / recent.output, money);
+      addMetric('Activity (' + unitInput.selectedOptions[0].textContent.toLowerCase() + ')', earlier.output, recent.output);
+      addMetric('Electricity cost per ' + unitLabels[unitInput.value], earlier.total / earlier.output, recent.total / recent.output, rate);
+      addMetric('Electricity use per ' + unitLabels[unitInput.value] + ' (kWh)', earlier.usage / earlier.output, recent.usage / recent.output);
     }
     if (earlier.days !== recent.days) {
       addFinding('The billing periods differ in length. Use the daily comparisons alongside the bill totals.');
@@ -112,6 +127,9 @@
   });
 
   document.getElementById('load-example').addEventListener('click', () => {
+    const factory = form.dataset.sample === 'factory';
+    const example = factory ? factoryExample : coldStorageExample;
+    unitInput.value = factory ? 'units' : 'tons';
     for (const [period, values] of Object.entries(example)) {
       fields.forEach((field, index) => { inputFor(period, field).value = values[index]; });
     }
