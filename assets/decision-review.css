@@ -1,0 +1,38 @@
+#decision-review select,
+#decision-review textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: .3rem;
+  padding: .65rem .8rem;
+  border: 1px solid #7899a2;
+  border-radius: .5rem;
+  background: #081920;
+  color: #f3fffc;
+  font: inherit;
+}
+
+#decision-review .decision-check {
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
+}
+
+#decision-review .decision-check input {
+  display: inline-block;
+  width: auto;
+  flex: none;
+  accent-color: #6ee7cf;
+}
+
+.decision-outcomes { margin-bottom: 1rem; }
+.decision-outcomes summary { cursor: pointer; font-weight: 700; }
+.decision-outcomes .scan-periods { margin-top: 1rem; }
+#decision-report[hidden] { display: none; }
+#decision-report { overflow-wrap: anywhere; }
+
+@media print {
+  main > :not(#decision-report), #decision-report .actions { display: none !important; }
+  body, #decision-report, #decision-report * { background: white !important; color: black !important; }
+  #decision-report { padding: 0; }
+}
