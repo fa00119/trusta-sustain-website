@@ -13,7 +13,7 @@
     { month: demoMonth, site: 'Illustrative Site A', decision: 'Cooling controls', status: 'measured', forecast: 2400, measured: 1680, next: 'Confirm persistence in next month’s meter data.' },
     { month: demoMonth, site: 'Illustrative Site B', decision: 'Metering retrofit', status: 'approved', forecast: 950, measured: null, next: 'Confirm commissioning date and data owner.' },
     { month: demoMonth, site: 'Illustrative Site B', decision: 'Shift scheduling', status: 'pending', forecast: 600, measured: null, next: 'Obtain production volumes by shift.' }
-  ];
+  ].map(record => ({ ...record, sample: true }));
   let records = [];
   let editing = null;
 
@@ -30,12 +30,20 @@
     site.replaceChildren(new Option('All sites', ''), ...sites.map(name => new Option(name, name)));
     site.value = selected;
     const visible = all.filter(record => !selected || record.site === selected);
-    const outcomes = visible.filter(record => record.status === 'measured');
-    const sum = (group, key) => group.reduce((total, record) => total + record[key], 0);
+    const totals = (group, prefix) => {
+      const outcomes = group.filter(record => record.status === 'measured');
+      const sum = (group, key) => group.reduce((total, record) => total + record[key], 0);
+      return [
+        ['Forecast · approved and recorded', dollars.format(sum(group.filter(record => record.status !== 'pending'), 'forecast'))],
+        ['Measured · recorded outcomes', outcomes.length ? dollars.format(sum(outcomes, 'measured')) : '—'],
+        ['Forecast · same recorded outcomes', outcomes.length ? dollars.format(sum(outcomes, 'forecast')) : '—']
+      ].map(([label, value]) => [prefix + label, value]);
+    };
+    const entered = visible.filter(record => !record.sample);
+    const examples = visible.filter(record => record.sample);
     const metrics = [
-      ['Forecast · approved and recorded', dollars.format(sum(visible.filter(record => record.status !== 'pending'), 'forecast'))],
-      ['Measured · recorded outcomes', outcomes.length ? dollars.format(sum(outcomes, 'measured')) : '—'],
-      ['Forecast · same recorded outcomes', outcomes.length ? dollars.format(sum(outcomes, 'forecast')) : '—']
+      ...(entered.length || !examples.length ? totals(entered, 'User-entered · ') : []),
+      ...(examples.length ? totals(examples, 'Illustrative · ') : [])
     ];
     get('portfolio-metrics').replaceChildren(...metrics.map(([label, value]) => {
       const card = document.createElement('div');
@@ -52,7 +60,7 @@
     }
     for (const record of visible) {
       const row = rows.insertRow();
-      const heading = cell('th', record.site + ' · ' + record.decision);
+      const heading = cell('th', record.site + ' · ' + record.decision + (record.sample ? ' (illustrative)' : ''));
       heading.scope = 'row';
       row.append(heading);
       for (const value of [labels[record.status], dollars.format(record.forecast), record.measured === null ? '—' : dollars.format(record.measured), record.next || '—']) {
@@ -104,7 +112,8 @@
       status,
       forecast: field('forecast').valueAsNumber,
       measured: status === 'measured' ? field('measured').valueAsNumber : null,
-      next: field('next').value.trim()
+      next: field('next').value.trim(),
+      ...(editing?.sample ? { sample: true } : {})
     };
     if (!record.site || !record.decision) {
       feedback.textContent = 'Enter a site and decision name.';
@@ -151,7 +160,7 @@
   function validRecord(record) {
     const fits = (value, max) => typeof value === 'string' && value.trim().length > 0 && value.length <= max;
     const amount = value => Number.isFinite(value) && Math.abs(value) <= 1000000000;
-    return record && validMonth(record.month) && fits(record.site, 80) && fits(record.decision, 140) &&
+    return record && (record.sample === undefined || record.sample === true) && validMonth(record.month) && fits(record.site, 80) && fits(record.decision, 140) &&
       Object.hasOwn(labels, record.status) && amount(record.forecast) && record.forecast >= 0 &&
       (record.status === 'measured' ? amount(record.measured) : record.measured === null) &&
       typeof record.next === 'string' && record.next.length <= 200;
