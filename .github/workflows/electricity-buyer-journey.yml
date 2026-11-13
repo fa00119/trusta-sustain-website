@@ -1,0 +1,53 @@
+name: Electricity scan buyer journey
+on:
+  pull_request:
+    paths:
+      - facility-electricity-scan.html
+      - decision-review*.html
+      - assets/energy-scan.js
+      - assets/decision-review.js
+      - .github/workflows/electricity-buyer-journey.yml
+permissions:
+  contents: read
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --no-save playwright@1.61.0
+      - run: npx playwright install --with-deps chromium
+      - name: Follow the synthetic buyer journey
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 &
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import { chromium } from 'playwright';
+          const browser = await chromium.launch();
+          try {
+            const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+            await page.goto('http://127.0.0.1:8765/facility-electricity-scan.html');
+            await page.locator('#load-example').click();
+            const brief = page.getByRole('link', { name: 'Turn this into a decision brief' });
+            if (!(await brief.isVisible())) {
+              await page.getByRole('button', { name: 'Analyze bills' }).click();
+            }
+            await brief.click();
+            assert.equal(new URL(page.url()).hash, '#brief');
+            await page.locator('input[name="decision"]').fill('Synthetic cooling controls comparison');
+            await page.getByRole('button', { name: 'Generate decision brief' }).click();
+            await page.locator('#decision-report').getByText('Synthetic cooling controls comparison', { exact: false }).first().waitFor();
+            await page.locator('#decision-report').getByRole('link', { name: 'See a sample report' }).click();
+            assert.equal(new URL(page.url()).pathname, '/decision-review-sample.html');
+            await page.getByRole('link', { name: 'Request a review of your proposal' }).click();
+            assert.equal(new URL(page.url()).hash, '#request');
+            const request = await page.locator('#decision-request').getAttribute('href');
+            assert.match(request, /^mailto:growth@trusta-sustain\.com\?/);
+            assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+            console.log('390px synthetic scan → generated brief → sample → scoped email request passed.');
+          } finally {
+            await browser.close();
+          }
+          JS
