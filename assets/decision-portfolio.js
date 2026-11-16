@@ -8,6 +8,7 @@
   const labels = { pending: 'Awaiting evidence', approved: 'Approved', measured: 'Outcome recorded' };
   const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
   const validMonth = value => typeof value === 'string' && /^\d{4}-(0[1-9]|1[0-2])$/.test(value);
+  const recordKey = record => JSON.stringify([record.month, record.site.trim().toLowerCase(), record.decision.trim().toLowerCase()]);
   const demoMonth = '2026-10';
   const demo = [
     { month: demoMonth, site: 'Illustrative Site A', decision: 'Cooling controls', status: 'measured', forecast: 2400, measured: 1680, next: 'Confirm persistence in next month’s meter data.' },
@@ -119,7 +120,7 @@
       feedback.textContent = 'Enter a site and decision name.';
       return;
     }
-    if (records.some(item => item !== editing && item.month === record.month && item.site.toLowerCase() === record.site.toLowerCase() && item.decision.toLowerCase() === record.decision.toLowerCase())) {
+    if (records.some(item => item !== editing && recordKey(item) === recordKey(record))) {
       feedback.textContent = 'This decision already exists for the selected site and month. Edit the existing record.';
       return;
     }
@@ -139,9 +140,8 @@
   site.addEventListener('change', render);
 
   get('portfolio-demo').addEventListener('click', () => {
-    const key = record => [record.month, record.site.toLowerCase(), record.decision.toLowerCase()].join('\u0000');
-    const existing = new Set(records.map(key));
-    records.push(...demo.filter(record => !existing.has(key(record))).map(record => ({ ...record })));
+    const existing = new Set(records.map(recordKey));
+    records.push(...demo.filter(record => !existing.has(recordKey(record))).map(record => ({ ...record })));
     month.value = demoMonth;
     form.reset();
     feedback.textContent = 'Illustrative records loaded. These are sample projects.';
@@ -175,9 +175,11 @@
       if (file.size > 2000000) throw Error('File too large.');
       const saved = JSON.parse(await file.text());
       if (saved.version !== 1 || !Array.isArray(saved.records) || !saved.records.every(validRecord)) throw Error('Invalid format.');
-      const key = record => JSON.stringify([record.month, record.site.trim().toLowerCase(), record.decision.trim().toLowerCase()]);
-      const merged = new Map(records.map(record => [key(record), record]));
-      for (const record of saved.records) if (!merged.has(key(record))) merged.set(key(record), record);
+      const merged = new Map(records.map(record => [recordKey(record), record]));
+      for (const record of saved.records) {
+        const key = recordKey(record);
+        if (!merged.has(key)) merged.set(key, { ...record, site: record.site.trim(), decision: record.decision.trim() });
+      }
       records = [...merged.values()];
       if (saved.records.length) month.value = saved.records.map(record => record.month).sort().at(-1);
       form.reset();
