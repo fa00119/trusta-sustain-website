@@ -17,10 +17,13 @@ function trackTrustaEvent(name,params={}){
   if(typeof window.gtag==='function') window.gtag('event',name,params);
 }
 
-const responsive=document.createElement('link');
-responsive.rel='stylesheet';
-responsive.href='/assets/mobile.css?v=20261116b';
-document.head.appendChild(responsive);
+// Pages with critical mobile CSS in the HTML head avoid loading it twice.
+if(!document.querySelector('link[href^="/assets/mobile.css"]')){
+  const responsive=document.createElement('link');
+  responsive.rel='stylesheet';
+  responsive.href='/assets/mobile.css?v=20261116b';
+  document.head.appendChild(responsive);
+}
 
 const menu=document.querySelector('.menu');
 const links=document.querySelector('.nav-links');
