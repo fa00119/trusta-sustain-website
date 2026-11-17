@@ -5,6 +5,7 @@ if(tabs.length!==3)return;
 const activate=(next,focus)=>{
 tabs.forEach(tab=>{const active=tab===next;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;const panel=document.getElementById(tab.getAttribute('aria-controls'));if(panel)panel.hidden=!active;});
 if(focus)next.focus();
+if(typeof window.gtag==='function')window.gtag('event','product_preview_select',{product:next.dataset.trustaPreview||'unknown',source_path:window.location.pathname});
 };
 tabs.forEach((tab,index)=>{
 tab.addEventListener('click',()=>activate(tab,false));

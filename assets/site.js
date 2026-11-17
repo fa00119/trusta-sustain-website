@@ -162,6 +162,22 @@ document.addEventListener('click',event=>{
     trackTrustaEvent('self_service_start',{tool_url:href,source_path:window.location.pathname});
     return;
   }
+  // Product demo attribution uses URL category, not visitor-provided data.
+  if(href.includes('orbit.trusta-sustain.com/demo/orbit')){
+    trackTrustaEvent('product_demo_open',{product:'orbit',source_path:window.location.pathname});
+    return;
+  }
+  if(href.includes('trusta-poweros-public-app-production.up.railway.app')){
+    trackTrustaEvent('product_demo_open',{product:'poweros',source_path:window.location.pathname});
+    return;
+  }
+  if(href.includes('trusta-conform-public-app-production.up.railway.app')){
+    trackTrustaEvent('product_demo_open',{product:'conform',source_path:window.location.pathname});
+    return;
+  }
+  if(href.startsWith('/contact.html') || href==='/contact.html'){
+    trackTrustaEvent('pilot_inquiry_navigation',{source_path:window.location.pathname});
+  }
   if(href.includes('app.trusta-sustain.com')){
     trackTrustaEvent('app_open',{destination:href,source_path:window.location.pathname});
     return;
