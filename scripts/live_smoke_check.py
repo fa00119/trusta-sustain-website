@@ -28,7 +28,7 @@ REQUIRED = {
         'assets/industrial-photography.css',
     ),
     "Products": ('/#product-ui-previews',),
-    "Contact": ('growth@trusta-sustain.com',),
+    "Contact": ('growth@trusta-sustain.com', 'id="choose-engagement"'),
 }
 
 
