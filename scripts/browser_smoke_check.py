@@ -38,10 +38,29 @@ def test_viewport(page, base, label, mobile):
     assert_ok(page.locator('[role="tab"]').count() == 3, f"{label}: three product tabs")
     assert_ok(page.locator("#preview-panel-orbit").is_visible(), f"{label}: ORBIT preview visible")
     page.locator("#preview-tab-poweros").click()
+    # Verify event reaches the local gtag dataLayer (without calling Google's servers).
+    preview_events = page.evaluate("""() => Array.from(window.dataLayer || [])
+      .filter(args => args[0] === 'event' && args[1] === 'product_preview_select')
+      .map(args => args[2]?.product)""")
+    assert_ok("poweros" in preview_events, f"{label}: PowerOS preview event queued locally")
     assert_ok(page.locator("#preview-panel-poweros").is_visible(), f"{label}: PowerOS tab active")
     assert_ok(page.locator("#preview-panel-orbit").is_hidden(), f"{label}: ORBIT panel hidden after switch")
     page.locator("#preview-tab-conform").click()
     assert_ok(page.locator("#preview-panel-conform").is_visible(), f"{label}: CONFORM tab active")
+    preview_events = page.evaluate("""() => Array.from(window.dataLayer || [])
+      .filter(args => args[0] === 'event' && args[1] === 'product_preview_select')
+      .map(args => args[2]?.product)""")
+    assert_ok("conform" in preview_events, f"{label}: CONFORM preview event queued locally")
+    # Synthetic click: block navigation and email-client launch; no lead is generated.
+    inquiry = page.locator('#preview-panel-conform a[href^="mailto:"]').first
+    page.evaluate("""() => document.addEventListener('click', e => {
+      if (e.target.closest('a[href^="mailto:"]')) e.preventDefault();
+    }, {capture:true, once:true})""")
+    inquiry.dispatch_event("click")
+    inquiry_events = page.evaluate("""() => Array.from(window.dataLayer || [])
+      .filter(args => args[0] === 'event' && args[1] === 'product_inquiry_intent')
+      .map(args => args[2]?.product)""")
+    assert_ok("conform" in inquiry_events, f"{label}: CONFORM inquiry intent event queued locally")
     page.locator("#preview-tab-conform").press("ArrowRight")
     assert_ok(page.locator("#preview-tab-orbit").get_attribute("aria-selected") == "true", f"{label}: keyboard arrow navigation")
     assert_ok(not page.evaluate("document.documentElement.scrollWidth > window.innerWidth + 2"), f"{label}: no horizontal page overflow")
