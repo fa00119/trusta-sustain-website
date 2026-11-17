@@ -87,6 +87,9 @@ if "index.html" in data:
     for tab in parser.tabs:
         if tab.get("aria-controls") not in parser.ids:
             errors.append("Tab aria-controls points to missing panel")
+    for lead_subject in ("ORBIT%20Site%20Screen%20Inquiry", "PowerOS%20Scenario%20Discussion", "CONFORM%20Evidence%20Review%20Inquiry"):
+        if lead_subject not in html:
+            errors.append(f"Homepage missing product inquiry CTA: {lead_subject}")
     for target in [
         "https://orbit.trusta-sustain.com/demo/orbit",
         "https://trusta-poweros-public-app-production.up.railway.app/",
