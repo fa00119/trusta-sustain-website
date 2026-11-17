@@ -59,6 +59,8 @@ def test_viewport(page, base, label, mobile):
 
     page.goto(base + "/contact.html", wait_until="domcontentloaded")
     assert_ok(page.locator("#choose-engagement").count() == 1, f"{label}: inquiry choices available")
+    assert_ok(page.locator("#copy-growth-email").count() == 1, f"{label}: copy-email fallback is available")
+    assert_ok(page.locator("#copy-growth-feedback").is_visible(), f"{label}: email fallback contact address is readable")
     for product, subject in [("ORBIT", "ORBIT%20Site%20Screen"), ("PowerOS", "PowerOS%20Scenario"), ("CONFORM", "CONFORM%20Evidence")]:
         href = page.locator(f'#choose-engagement a[href^="mailto:"]').filter(has_text=product).first.get_attribute("href")
         assert_ok(href is not None and subject in href, f"{label}: {product} inquiry directs to matching sales template")
