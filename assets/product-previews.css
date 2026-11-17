@@ -6,3 +6,20 @@
 @media(max-width:980px){.trusta-preview-heading{flex-direction:column;align-items:start}.trusta-preview-explain{flex-direction:column;align-items:start}.trusta-preview-actions{justify-content:flex-start}.trusta-ui-grid{grid-template-columns:135px minmax(0,1fr)}}
 @media(max-width:650px){.trusta-preview-section{padding:53px 0}.trusta-preview-heading h2{font-size:clamp(2rem,8.2vw,3rem)}.trusta-preview-tabs{gap:5px}.trusta-preview-tab{font-size:.78rem;padding:10px 6px;text-align:center}.trusta-preview-tab span{font-size:.61rem;line-height:1.25}.trusta-ui-window{margin:10px 10px 0}.trusta-ui-label{font-size:.48rem}.trusta-ui-grid{grid-template-columns:1fr}.trusta-ui-sidebar{display:none}.trusta-ui-content{padding:16px 12px}.trusta-ui-content h3{font-size:1.2rem}.trusta-ui-metrics{gap:5px}.trusta-ui-metrics>div{padding:8px}.trusta-ui-metrics b{font-size:.73rem;overflow-wrap:anywhere}.trusta-ui-metrics span{font-size:.59rem}.trusta-ui-flow{gap:3px}.trusta-ui-flow span{font-size:.57rem;padding:7px 4px}.trusta-preview-explain{padding:20px 14px}.trusta-preview-actions{width:100%;flex-direction:column;align-items:stretch}.trusta-preview-actions a{text-align:center;white-space:normal}.trusta-ui-top{gap:5px;font-size:.58rem}.trusta-evidence-list>div{font-size:.7rem;padding:9px}.trusta-evidence-list b{font-size:.62rem}}
 @media(prefers-reduced-motion:reduce){.trusta-preview-tab{transition:none}}
+
+/* Tight viewport fixes for 320–390px devices and high zoom. */
+@media(max-width:390px){
+.trusta-preview-tabs{grid-template-columns:1fr;gap:7px}
+.trusta-preview-tab{text-align:left;padding:10px 13px;font-size:.94rem;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.trusta-preview-tab span{font-size:.7rem;margin:0;text-align:right}
+.trusta-ui-metrics{grid-template-columns:1fr;gap:7px}
+.trusta-ui-metrics>div{display:grid;grid-template-columns:85px minmax(0,1fr);align-items:center;gap:6px;padding:8px 10px}
+.trusta-ui-metrics b{margin:0;font-size:.78rem}
+.trusta-ui-metrics span{grid-column:2}
+.trusta-ui-flow{flex-wrap:wrap;justify-content:flex-start;gap:5px}
+.trusta-ui-flow i{flex:none;width:12px}
+.trusta-ui-top>span:nth-child(2){min-width:0;overflow-wrap:anywhere}
+.trusta-ui-content h3{overflow-wrap:normal}
+.trusta-ui-insight{font-size:.76rem}
+}
+@media(prefers-contrast:more){.trusta-preview-tab[aria-selected=true]{border-width:2px}.trusta-ui-insight{border-left-width:5px}.trusta-preview-disclaimer{color:#cbe5ea}}
