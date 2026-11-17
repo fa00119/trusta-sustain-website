@@ -184,6 +184,14 @@ document.addEventListener('click',event=>{
   }
   if(href.startsWith('mailto:')){
     trackTrustaEvent('enterprise_contact_intent',{source_path:window.location.pathname});
+    // Categorize product-specific inquiry clicks without collecting email contents or PII.
+    const subject=(href.split('?')[1]||'').split('&').find(part=>part.toLowerCase().startsWith('subject='))||'';
+    let category='other';
+    if(/orbit/i.test(subject)) category='orbit';
+    else if(/poweros/i.test(subject)) category='poweros';
+    else if(/conform/i.test(subject)) category='conform';
+    else if(/environmental|engineering/i.test(subject)) category='engineering';
+    if(category!=='other')trackTrustaEvent('product_inquiry_intent',{product:category,source_path:window.location.pathname});
   }
 });
 
