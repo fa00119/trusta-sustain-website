@@ -29,3 +29,25 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check public URLs (informational)
         run: python3 scripts/live_smoke_check.py
+
+  browser-quality:
+    name: Browser UI (320 / 375 / 768 / 1440 px)
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Playwright with Chromium
+        run: |
+          python3 -m pip install --user playwright
+          python3 -m playwright install --with-deps chromium
+      - name: Validate mobile navigation, previews and inquiry routes
+        run: python3 scripts/browser_smoke_check.py
+      - name: Upload desktop and mobile QA captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trusta-responsive-browser-captures
+          path: artifacts/website-qa/*.png
+          if-no-files-found: ignore
+          retention-days: 14
