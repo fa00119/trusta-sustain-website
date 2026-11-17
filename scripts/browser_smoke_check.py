@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+"""Headless Chromium checks for Trusta's responsive static website."""
+from contextlib import contextmanager
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+from threading import Thread
+from playwright.sync_api import sync_playwright
+
+ROOT = Path(__file__).resolve().parents[1]
+OUTPUT = ROOT / "artifacts" / "website-qa"
+OUTPUT.mkdir(parents=True, exist_ok=True)
+
+
+@contextmanager
+def local_server():
+    handler = partial(SimpleHTTPRequestHandler, directory=str(ROOT))
+    server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    thread = Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        yield f"http://127.0.0.1:{server.server_port}"
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=3)
+
+
+def assert_ok(value, description):
+    if not value:
+        raise AssertionError(description)
+    print("PASS:", description)
+
+
+def test_viewport(page, base, label, mobile):
+    page.goto(base + "/index.html", wait_until="domcontentloaded")
+    page.locator("#product-ui-previews").scroll_into_view_if_needed()
+    assert_ok(page.locator('[role="tab"]').count() == 3, f"{label}: three product tabs")
+    assert_ok(page.locator("#preview-panel-orbit").is_visible(), f"{label}: ORBIT preview visible")
+    page.locator("#preview-tab-poweros").click()
+    assert_ok(page.locator("#preview-panel-poweros").is_visible(), f"{label}: PowerOS tab active")
+    assert_ok(page.locator("#preview-panel-orbit").is_hidden(), f"{label}: ORBIT panel hidden after switch")
+    page.locator("#preview-tab-conform").click()
+    assert_ok(page.locator("#preview-panel-conform").is_visible(), f"{label}: CONFORM tab active")
+    page.locator("#preview-tab-conform").press("ArrowRight")
+    assert_ok(page.locator("#preview-tab-orbit").get_attribute("aria-selected") == "true", f"{label}: keyboard arrow navigation")
+    assert_ok(not page.evaluate("document.documentElement.scrollWidth > window.innerWidth + 2"), f"{label}: no horizontal page overflow")
+    page.screenshot(path=str(OUTPUT / f"homepage-{label}.png"), full_page=True, animations="disabled")
+
+    if mobile:
+        page.goto(base + "/index.html", wait_until="domcontentloaded")
+        menu = page.locator(".menu")
+        assert_ok(menu.is_visible(), f"{label}: mobile menu visible")
+        menu.click()
+        assert_ok(menu.get_attribute("aria-expanded") == "true", f"{label}: mobile navigation opens")
+        menu.press("Escape")
+        assert_ok(menu.get_attribute("aria-expanded") == "false", f"{label}: Escape closes mobile menu")
+
+    page.goto(base + "/contact.html", wait_until="domcontentloaded")
+    assert_ok(page.locator("#choose-engagement").count() == 1, f"{label}: inquiry choices available")
+    assert_ok(not page.evaluate("document.documentElement.scrollWidth > window.innerWidth + 2"), f"{label}: contact page fits viewport")
+    page.screenshot(path=str(OUTPUT / f"contact-{label}.png"), full_page=True, animations="disabled")
+
+
+def main():
+    with local_server() as base, sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True, args=["--no-sandbox"])
+        try:
+            for label, width, height, mobile in (
+                ("mobile-320", 320, 740, True),
+                ("mobile-375", 375, 812, True),
+                ("tablet-768", 768, 1024, True),
+                ("desktop-1440", 1440, 900, False),
+            ):
+                context = browser.new_context(viewport={"width": width, "height": height},
+                                              is_mobile=mobile, has_touch=mobile)
+                page = context.new_page()
+                page.route("https://**/*", lambda route: route.abort())
+                test_viewport(page, base, label, mobile)
+                context.close()
+        finally:
+            browser.close()
+    print("PASS: Responsive UI smoke checks complete")
+
+
+if __name__ == "__main__":
+    main()
