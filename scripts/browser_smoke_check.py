@@ -47,17 +47,21 @@ def test_viewport(page, base, label, mobile):
     assert_ok(not page.evaluate("document.documentElement.scrollWidth > window.innerWidth + 2"), f"{label}: no horizontal page overflow")
     page.screenshot(path=str(OUTPUT / f"homepage-{label}.png"), full_page=True, animations="disabled")
 
-    if mobile:
+    # Home uses collapsed navigation through 1600px, including laptop widths.
+    if mobile or label == "desktop-1440":
         page.goto(base + "/index.html", wait_until="domcontentloaded")
         menu = page.locator(".menu")
-        assert_ok(menu.is_visible(), f"{label}: mobile menu visible")
+        assert_ok(menu.is_visible(), f"{label}: responsive menu visible")
         menu.click()
-        assert_ok(menu.get_attribute("aria-expanded") == "true", f"{label}: mobile navigation opens")
+        assert_ok(menu.get_attribute("aria-expanded") == "true", f"{label}: responsive navigation opens")
         menu.press("Escape")
-        assert_ok(menu.get_attribute("aria-expanded") == "false", f"{label}: Escape closes mobile menu")
+        assert_ok(menu.get_attribute("aria-expanded") == "false", f"{label}: Escape closes responsive menu")
 
     page.goto(base + "/contact.html", wait_until="domcontentloaded")
     assert_ok(page.locator("#choose-engagement").count() == 1, f"{label}: inquiry choices available")
+    for product, subject in [("ORBIT", "ORBIT%20Site%20Screen"), ("PowerOS", "PowerOS%20Scenario"), ("CONFORM", "CONFORM%20Evidence")]:
+        href = page.locator(f'#choose-engagement a[href^="mailto:"]').filter(has_text=product).first.get_attribute("href")
+        assert_ok(href is not None and subject in href, f"{label}: {product} inquiry directs to matching sales template")
     assert_ok(not page.evaluate("document.documentElement.scrollWidth > window.innerWidth + 2"), f"{label}: contact page fits viewport")
     page.screenshot(path=str(OUTPUT / f"contact-{label}.png"), full_page=True, animations="disabled")
 
