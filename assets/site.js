@@ -19,7 +19,7 @@ function trackTrustaEvent(name,params={}){
 
 const responsive=document.createElement('link');
 responsive.rel='stylesheet';
-responsive.href='/assets/mobile.css?v=20261027a';
+responsive.href='/assets/mobile.css?v=20261116b';
 document.head.appendChild(responsive);
 
 const menu=document.querySelector('.menu');
@@ -48,24 +48,28 @@ if(links){
 
 if(menu&&links){
   menu.setAttribute('aria-expanded','false');
+  menu.setAttribute('aria-label','Open navigation');
   menu.setAttribute('aria-controls','site-navigation');
   links.id=links.id||'site-navigation';
 
   const closeMenu=()=>{
     links.classList.remove('open');
     menu.setAttribute('aria-expanded','false');
+    menu.setAttribute('aria-label','Open navigation');
     document.body.classList.remove('nav-open');
   };
 
   menu.addEventListener('click',()=>{
     const isOpen=links.classList.toggle('open');
     menu.setAttribute('aria-expanded',String(isOpen));
+    menu.setAttribute('aria-label',isOpen?'Close navigation':'Open navigation');
     document.body.classList.toggle('nav-open',isOpen);
   });
 
   links.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMenu));
   document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMenu();});
-  window.addEventListener('resize',()=>{if(window.innerWidth>900)closeMenu();});
+  window.addEventListener('resize',()=>{const cutoff=document.body.classList.contains('home-v2')?1600:900;if(window.innerWidth>cutoff)closeMenu();});
+  document.addEventListener('click',event=>{if(!links.classList.contains('open'))return;const target=event.target;if(target instanceof Node&&!links.contains(target)&&!menu.contains(target))closeMenu();});
 }
 
 const style=document.createElement('style');
@@ -179,3 +183,19 @@ if(!document.querySelector('script[data-trusta-marketing-foundation]')){
   marketingFoundation.dataset.trustaMarketingFoundation='true';
   document.head.appendChild(marketingFoundation);
 }
+
+
+// Avoid broken-image icons if a third-party editorial photo becomes unavailable.
+// Preserve the layout, caption and source credit so the page remains usable.
+document.querySelectorAll('.trusta-photo-frame img,.trusta-photo-inline img').forEach(img=>{
+  const fallback=()=>{
+    if(img.dataset.photoFallbackApplied)return;
+    img.dataset.photoFallbackApplied='true';
+    img.hidden=true;
+    img.setAttribute('aria-hidden','true');
+    const frame=img.closest('.trusta-photo-frame,.trusta-photo-inline');
+    if(frame){frame.classList.add('trusta-photo-unavailable');const notice=document.createElement('span');notice.className='trusta-photo-placeholder';notice.textContent='Infrastructure & engineering';frame.insertBefore(notice,frame.firstChild);}
+  };
+  img.addEventListener('error',fallback,{once:true});
+  if(img.complete&&img.naturalWidth===0)fallback();
+});
