@@ -122,3 +122,37 @@ button,a{-webkit-tap-highlight-color:transparent}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
+
+/* Site-wide mobile layout and interaction hardening, Nov 2026. */
+html,body{max-width:100%;overflow-x:clip}
+img,svg,video,iframe{max-width:100%}
+.nav-inner{min-width:0}
+.nav-links{overscroll-behavior:contain}
+.nav-links>a{overflow-wrap:anywhere}
+.menu{flex-shrink:0;touch-action:manipulation}
+@media(max-width:900px){
+  .nav-links.open{display:flex}
+  .nav-links{max-height:calc(100dvh - 76px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .nav-inner{position:relative}
+  .nav-links{position:absolute;top:100%;left:0;right:0;max-height:calc(100dvh - 76px);width:100%}
+  .home-v2 .nav-links{top:100%;max-height:calc(100dvh - 76px)}
+  .actions .btn{min-height:48px;text-align:center;white-space:normal}
+  .footer-grid>*{min-width:0}
+}
+@media(max-width:580px){
+  .nav-links,.home-v2 .nav-links{max-height:calc(100dvh - 64px)}
+  .home-v2 .hero-copy h1{overflow-wrap:normal;word-break:normal;font-size:clamp(2.25rem,10.1vw,3.45rem);line-height:1.07}
+  .home-v2 .micro-nav{white-space:normal;overflow:visible;line-height:1.5}
+  .home-v2 .hero-copy .actions .btn{max-width:100%}
+  .visual-showcase-grid,.trusta-photo-grid{grid-template-columns:minmax(0,1fr)}
+  .trusta-photo-foot{align-items:flex-start;flex-direction:column}
+  .trusta-photo-inline figcaption{font-size:.75rem}
+  .trusta-photo-frame{min-height:170px}
+  .footer .legal{gap:10px}
+}
+@media(max-width:380px){
+  .home-v2 .hero-copy h1{font-size:clamp(2.12rem,9.7vw,2.7rem)}
+  .home-v2 .container{width:calc(100% - 24px)}
+  .trusta-photo-heading h2{overflow-wrap:normal;font-size:2rem}
+  .trusta-photo-copy h3{font-size:1.16rem}
+}
