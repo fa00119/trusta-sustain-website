@@ -7,7 +7,7 @@
   const feedback = get('portfolio-feedback');
   const labels = { pending: 'Awaiting evidence', approved: 'Approved', measured: 'Outcome recorded' };
   const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-  const validMonth = value => typeof value === 'string' && /^\d{4}-(0[1-9]|1[0-2])$/.test(value);
+  const validMonth = value => typeof value === 'string' && /^(?!0000)\d{4}-(0[1-9]|1[0-2])$/.test(value);
   const recordKey = record => JSON.stringify([record.month, record.site.trim().toLowerCase(), record.decision.trim().toLowerCase()]);
   const demoMonth = '2026-10';
   const demo = [
@@ -105,6 +105,10 @@
   form.addEventListener('submit', event => {
     event.preventDefault();
     if (!month.reportValidity()) return;
+    if (!validMonth(month.value)) {
+      feedback.textContent = 'Enter a reporting month with a four-digit year from 0001 to 9999.';
+      return;
+    }
     const status = field('status').value;
     const record = {
       month: month.value,
