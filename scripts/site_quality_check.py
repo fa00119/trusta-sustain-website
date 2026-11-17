@@ -97,11 +97,16 @@ if "index.html" in data:
     ]:
         if target not in html:
             errors.append(f"Homepage missing product demo link: {target}")
+if "contact.html" in data:
+    contact = data["contact.html"][0]
+    for required in ('id="contact-email-options"', 'id="copy-growth-email"', '/assets/contact-email.js'):
+        if required not in contact:
+            errors.append(f"Contact page missing fallback: {required}")
 if "products.html" in data and "/#product-ui-previews" not in data["products.html"][0]:
     errors.append("Products page lacks discoverable product preview link")
 for name in [
     "assets/mobile.css", "assets/industrial-photography.css",
-    "assets/product-previews.css", "assets/product-previews.js",
+    "assets/product-previews.css", "assets/product-previews.js", "assets/contact-email.js",
 ]:
     if not (ROOT / name).is_file():
         errors.append(f"Missing core asset: {name}")
