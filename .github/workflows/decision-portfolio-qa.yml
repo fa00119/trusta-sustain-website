@@ -50,10 +50,22 @@ jobs:
             await importRecords([{ ...entered, decision: 'Invalid negative forecast', forecast: -1 }]);
             await page.getByText(/Could not open this file/).waitFor();
             assert.equal(await rows.getByText(/Invalid negative forecast/).count(), 0);
+            await importRecords([{ ...entered, month: '0000-01', decision: 'Invalid year zero' }]);
+            await page.getByText(/Could not open this file/).waitFor();
+            const month = page.locator('#portfolio-month');
+            await month.fill('10000-01');
+            const form = page.locator('#portfolio-form');
+            await form.locator('[name=site]').fill('QA site');
+            await form.locator('[name=decision]').fill('Invalid five-digit year');
+            await form.locator('[name=forecast]').fill('10');
+            await form.evaluate(element => element.requestSubmit());
+            await page.getByText(/Enter a reporting month with a four-digit year/).waitFor();
+            await month.fill('2026-10');
             const [download] = await Promise.all([
               page.waitForEvent('download'), page.locator('#portfolio-export').click()
             ]);
             const exported = JSON.parse(await readFile(await download.path(), 'utf8'));
+            assert.equal(exported.records.some(record => record.month === '0000-01' || record.month === '10000-01'), false);
             assert.equal(exported.records.filter(record => record.sample === true).length, 3);
             assert.equal(exported.records.find(record => record.decision === entered.decision).sample, undefined);
             await page.reload();
