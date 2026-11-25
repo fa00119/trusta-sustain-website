@@ -37,6 +37,10 @@ def test_viewport(page, base, label, mobile):
     page.locator("#product-ui-previews").scroll_into_view_if_needed()
     assert_ok(page.locator('[role="tab"]').count() == 3, f"{label}: three product tabs")
     assert_ok(page.locator("#preview-panel-orbit").is_visible(), f"{label}: ORBIT preview visible")
+    assert_ok(page.locator('script[data-trusta-ga4]').count() == 0, f"{label}: no Google tag before consent")
+    page.get_by_text('Analytics preferences', exact=True).click()
+    page.get_by_role('button', name='Allow analytics').click()
+    assert_ok(page.locator('script[data-trusta-ga4]').count() == 1, f"{label}: one tag after consent")
     page.locator("#preview-tab-poweros").click()
     # Verify event reaches the local gtag dataLayer (without calling Google's servers).
     preview_events = page.evaluate("""() => Array.from(window.dataLayer || [])
@@ -58,9 +62,9 @@ def test_viewport(page, base, label, mobile):
     }, {capture:true, once:true})""")
     inquiry.dispatch_event("click")
     inquiry_events = page.evaluate("""() => Array.from(window.dataLayer || [])
-      .filter(args => args[0] === 'event' && args[1] === 'product_inquiry_intent')
+      .filter(args => args[0] === 'event' && args[1] === 'demo_request_click')
       .map(args => args[2]?.product)""")
-    assert_ok("conform" in inquiry_events, f"{label}: CONFORM inquiry intent event queued locally")
+    assert_ok(inquiry_events == ["conform"], f"{label}: CONFORM inquiry intent event queued locally")
     page.locator("#preview-tab-conform").press("ArrowRight")
     assert_ok(page.locator("#preview-tab-orbit").get_attribute("aria-selected") == "true", f"{label}: keyboard arrow navigation")
     assert_ok(not page.evaluate("document.documentElement.scrollWidth > window.innerWidth + 2"), f"{label}: no horizontal page overflow")
@@ -85,6 +89,24 @@ def test_viewport(page, base, label, mobile):
         assert_ok(href is not None and subject in href, f"{label}: {product} inquiry directs to matching sales template")
     assert_ok(not page.evaluate("document.documentElement.scrollWidth > window.innerWidth + 2"), f"{label}: contact page fits viewport")
     page.screenshot(path=str(OUTPUT / f"contact-{label}.png"), full_page=True, animations="disabled")
+    for url, event_name, selector in (
+        ("/contact.html", "contact_click", 'a[href="mailto:growth@trusta-sustain.com"]'),
+        ("/decision-evidence.html", "investor_interest_click", '[data-growth-event="investor_interest_click"]'),
+    ):
+        page.goto(base + url + "?test=synthetic%40example.invalid", wait_until="domcontentloaded")
+        page.evaluate("() => document.addEventListener('click', e => e.preventDefault(), {capture:true, once:true})")
+        page.locator(selector).first.dispatch_event("click")
+        hits = page.evaluate("""name => Array.from(window.dataLayer || [])
+          .filter(args => args[0] === 'event' && args[1] === name)
+          .map(args => args[2])""", event_name)
+        expected = {"source_path": url, "analytics_consent": "granted"}
+        assert_ok(hits == [expected], f"{label}: {event_name} recorded once")
+        assert_ok(not page.evaluate("JSON.stringify(window.dataLayer).includes('example.invalid')"),
+                  f"{label}: page query excluded from custom analytics")
+    page.get_by_text('Analytics preferences', exact=True).click()
+    page.get_by_role('button', name='Decline analytics').click()
+    page.wait_for_function("document.querySelectorAll('script[data-trusta-ga4]').length === 0")
+
 
 
 def main():

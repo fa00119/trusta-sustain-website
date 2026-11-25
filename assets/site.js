@@ -1,11 +1,26 @@
 const GA4_MEASUREMENT_ID='G-8GD2215R3Y';
+const analyticsPreferenceKey='trusta.analytics.v1';
+let analyticsPreference;
+try { analyticsPreference=localStorage.getItem(analyticsPreferenceKey); } catch (_) {}
 
-if(!window.__trustaGa4Initialized){
+function startTrustaAnalytics(){
+  if(window.__trustaGa4Initialized)return;
   window.__trustaGa4Initialized=true;
   window.dataLayer=window.dataLayer||[];
   window.gtag=window.gtag||function(){window.dataLayer.push(arguments);};
+  window.gtag('consent','default',{
+    analytics_storage:'denied',ad_storage:'denied',
+    ad_user_data:'denied',ad_personalization:'denied'
+  });
+  window.gtag('consent','update',{analytics_storage:'granted'});
   window.gtag('js',new Date());
-  window.gtag('config',GA4_MEASUREMENT_ID,{send_page_view:true});
+  window.gtag('config',GA4_MEASUREMENT_ID,{
+    send_page_view:true,
+    page_location:location.origin+location.pathname,
+    page_referrer:'',
+    allow_google_signals:false,
+    allow_ad_personalization_signals:false
+  });
   const ga=document.createElement('script');
   ga.async=true;
   ga.src=`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA4_MEASUREMENT_ID)}`;
@@ -13,8 +28,39 @@ if(!window.__trustaGa4Initialized){
   document.head.appendChild(ga);
 }
 
+if(analyticsPreference==='allow')startTrustaAnalytics();
+const analyticsSettings=document.createElement('details');
+analyticsSettings.className='container';
+analyticsSettings.innerHTML='<summary>Analytics preferences</summary><p>Optional analytics help us understand which pages and links are useful.</p><div class="actions"><button type="button" class="btn" data-choice="allow">Allow analytics</button><button type="button" class="btn" data-choice="deny">Decline analytics</button></div><p role="status"></p>';
+const analyticsStatus=analyticsSettings.querySelector('[role="status"]');
+const updateAnalyticsStatus=()=>{analyticsStatus.textContent=analyticsPreference==='allow'?'Analytics enabled.':'Analytics off.';};
+updateAnalyticsStatus();
+(document.querySelector('footer')||document.body).appendChild(analyticsSettings);
+analyticsSettings.addEventListener('click',event=>{
+  const choice=event.target.closest?.('button[data-choice]')?.dataset.choice;
+  if(choice!=='allow'&&choice!=='deny')return;
+  analyticsPreference=choice;
+  try { localStorage.setItem(analyticsPreferenceKey,choice); } catch (_) {}
+  updateAnalyticsStatus();
+  if(choice==='allow'){
+    window['ga-disable-'+GA4_MEASUREMENT_ID]=false;
+    if(window.__trustaGa4Initialized)window.gtag('consent','update',{analytics_storage:'granted'});
+    else startTrustaAnalytics();
+  }
+  else if(window.__trustaGa4Initialized){
+    window['ga-disable-'+GA4_MEASUREMENT_ID]=true;
+    window.gtag('consent','update',{analytics_storage:'denied'});
+    if(localStorageChoiceSaved())location.reload();
+  }
+});
+function localStorageChoiceSaved(){
+  try { return localStorage.getItem(analyticsPreferenceKey)==='deny'; } catch (_) { return false; }
+}
+
 function trackTrustaEvent(name,params={}){
-  if(typeof window.gtag==='function') window.gtag('event',name,params);
+  if(analyticsPreference==='allow'&&!window['ga-disable-'+GA4_MEASUREMENT_ID]&&typeof window.gtag==='function'){
+    window.gtag('event',name,params);
+  }
 }
 
 // Pages with critical mobile CSS in the HTML head avoid loading it twice.
@@ -84,12 +130,6 @@ style.textContent=`
 `;
 document.head.appendChild(style);
 
-document.querySelectorAll('body *').forEach(el=>{
-  if(el.children.length===0&&el.textContent.includes('Los Angeles, California')){
-    el.textContent=el.textContent.replace('Los Angeles, California','Missouri & California');
-  }
-});
-
 if(window.location.pathname.endsWith('/store.html')||window.location.pathname==='/store'){
   const managed=document.querySelector('#managed');
   if(managed&&!document.querySelector('#quick-services')){
@@ -153,13 +193,21 @@ document.addEventListener('click',event=>{
   const anchor=event.target instanceof Element?event.target.closest('a[href]'):null;
   if(!anchor)return;
   const href=anchor.getAttribute('href')||'';
+  const growthEvent=anchor.dataset.growthEvent;
+  if(['demo_request_click','contact_click','investor_interest_click'].includes(growthEvent)){
+    const product=anchor.dataset.growthProduct;
+    const params={source_path:location.pathname, analytics_consent:'granted'};
+    if(['orbit','poweros','conform'].includes(product))params.product=product;
+    trackTrustaEvent(growthEvent,params);
+    return;
+  }
   const text=(anchor.textContent||'').trim().slice(0,80);
   if(href.includes('buy.stripe.com')){
     trackTrustaEvent('begin_checkout',{link_text:text,offer_path:window.location.pathname});
     return;
   }
   if(href.includes('/self-service.html')||href.includes('/instant-assessment.html')||href.includes('/roi-calculator.html')){
-    trackTrustaEvent('self_service_start',{tool_url:href,source_path:window.location.pathname});
+    trackTrustaEvent('self_service_start',{tool_url:href.split(/[?#]/)[0],source_path:window.location.pathname});
     return;
   }
   // Product demo attribution uses URL category, not visitor-provided data.
@@ -167,23 +215,23 @@ document.addEventListener('click',event=>{
     trackTrustaEvent('product_demo_open',{product:'orbit',source_path:window.location.pathname});
     return;
   }
-  if(href.includes('trusta-poweros-public-app-production.up.railway.app')){
+  if(href.startsWith('https://poweros.trusta-sustain.com/')||href.startsWith('https://trusta-poweros-public-app-production.up.railway.app/')){
     trackTrustaEvent('product_demo_open',{product:'poweros',source_path:window.location.pathname});
     return;
   }
-  if(href.includes('trusta-conform-public-app-production.up.railway.app')){
+  if(href.startsWith('https://conform.trusta-sustain.com/')||href.startsWith('https://trusta-conform-public-app-production.up.railway.app/')){
     trackTrustaEvent('product_demo_open',{product:'conform',source_path:window.location.pathname});
     return;
   }
-  if(href.startsWith('/contact.html') || href==='/contact.html'){
-    trackTrustaEvent('pilot_inquiry_navigation',{source_path:window.location.pathname});
+  if(href==='/contact.html'||href.startsWith('/contact.html#')||href.startsWith('/contact.html?')){
+    trackTrustaEvent('contact_click',{source_path:window.location.pathname,analytics_consent:'granted'});
   }
   if(href.includes('app.trusta-sustain.com')){
-    trackTrustaEvent('app_open',{destination:href,source_path:window.location.pathname});
+    trackTrustaEvent('app_open',{destination:'customer_app',source_path:window.location.pathname});
     return;
   }
   if(href.startsWith('mailto:')){
-    trackTrustaEvent('enterprise_contact_intent',{source_path:window.location.pathname});
+    trackTrustaEvent('contact_click',{source_path:window.location.pathname,analytics_consent:'granted'});
     // Categorize product-specific inquiry clicks without collecting email contents or PII.
     const subject=(href.split('?')[1]||'').split('&').find(part=>part.toLowerCase().startsWith('subject='))||'';
     let category='other';
@@ -205,7 +253,7 @@ if(!document.querySelector('script[data-trusta-service-quality]')){
 
 if(!document.querySelector('script[data-trusta-marketing-foundation]')){
   const marketingFoundation=document.createElement('script');
-  marketingFoundation.src='/assets/marketing-foundation.js?v=20261028a';
+  marketingFoundation.src='/assets/marketing-foundation.js?v=20261125';
   marketingFoundation.defer=true;
   marketingFoundation.dataset.trustaMarketingFoundation='true';
   document.head.appendChild(marketingFoundation);
