@@ -30,6 +30,9 @@
     const selected = sites.includes(site.value) ? site.value : '';
     site.replaceChildren(new Option('All sites', ''), ...sites.map(name => new Option(name, name)));
     site.value = selected;
+    const reportingMonth = validMonth(month.value) ? month.value : 'No valid month selected';
+    const printScope = get('portfolio-print-scope');
+    if (printScope) printScope.textContent = `Reporting month: ${reportingMonth} · Site: ${selected || 'All sites'} · Currency: USD`;
     const visible = all.filter(record => !selected || record.site === selected);
     const totals = (group, prefix) => {
       const outcomes = group.filter(record => record.status === 'measured');
