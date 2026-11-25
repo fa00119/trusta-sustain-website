@@ -18,7 +18,10 @@
 .evidence-definitions dd:last-child { margin-bottom: 0; }
 .service-group { margin-top: 2rem; }
 
+#portfolio-print-scope { display: none; }
+
 @media print {
+  #portfolio-print-scope { display: block; }
   .dashboard-tools, .portfolio-filters, #portfolio-form, #monthly-review .actions,
   .portfolio-table th:last-child, .portfolio-table td:last-child { display: none !important; }
   .portfolio-table { overflow: visible; }

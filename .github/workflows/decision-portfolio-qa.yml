@@ -77,6 +77,16 @@ jobs:
             await page.locator('#portfolio-month').fill('2026-10');
             await rows.getByText(/QA fixture/).waitFor();
             assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+            const printScope = page.locator('#portfolio-print-scope');
+            assert.equal(await printScope.isVisible(), false);
+            await page.emulateMedia({ media: 'print' });
+            assert.equal(await page.locator('.portfolio-filters').isVisible(), false);
+            assert.equal(await printScope.isVisible(), true);
+            assert.equal(await printScope.textContent(), 'Reporting month: 2026-10 · Site: All sites · Currency: USD');
+            await page.emulateMedia({ media: 'screen' });
+            await page.locator('#portfolio-site').selectOption('Illustrative Site A');
+            await page.emulateMedia({ media: 'print' });
+            assert.equal(await printScope.textContent(), 'Reporting month: 2026-10 · Site: Illustrative Site A · Currency: USD');
             const pdf = await page.pdf({ format: 'A4' });
             assert.equal(pdf.subarray(0, 5).toString(), '%PDF-');
             console.log('Mixed totals, month/site filters, invalid import, JSON round trip, mobile width and PDF passed.');
