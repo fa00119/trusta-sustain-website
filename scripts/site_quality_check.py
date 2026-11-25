@@ -92,8 +92,8 @@ if "index.html" in data:
             errors.append(f"Homepage missing product inquiry CTA: {lead_subject}")
     for target in [
         "https://orbit.trusta-sustain.com/demo/orbit",
-        "https://trusta-poweros-public-app-production.up.railway.app/",
-        "https://trusta-conform-public-app-production.up.railway.app/",
+        "https://poweros.trusta-sustain.com/",
+        "https://conform.trusta-sustain.com/",
     ]:
         if target not in html:
             errors.append(f"Homepage missing product demo link: {target}")

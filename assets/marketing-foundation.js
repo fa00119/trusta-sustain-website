@@ -1,32 +1,6 @@
 (() => {
   const origin = 'https://trusta-sustain.com';
 
-  // GA4 is initialized once by assets/site.js. This shared layer only emits events.
-  const track = (name, params={}) => {
-    try { if (typeof window.gtag === 'function') window.gtag('event', name, params); } catch (_) {}
-  };
-
-  document.addEventListener('click', event => {
-    const link = event.target.closest?.('a[href]');
-    if (!link) return;
-    const href = link.getAttribute('href') || '';
-    const text = (link.textContent || '').trim().slice(0,120);
-    if (href.includes('buy.stripe.com') || href.includes('book.stripe.com')) {
-      track('begin_checkout', { link_url: href, link_text: text, page_path: location.pathname });
-    } else if (href.startsWith('/self-service') || href.startsWith('/instant-assessment') || href.startsWith('/roi-calculator') || href.startsWith('/infrastructure-assessment') || href.startsWith('/value-opportunity-prioritizer') || href.startsWith('/orbit-readiness')) {
-      track('self_service_start', { destination: href, link_text: text, page_path: location.pathname });
-      if (href.startsWith('/orbit-readiness')) track('orbit_readiness_start', { source_path: location.pathname });
-    } else if (href.startsWith('/orbit-site-screen')) {
-      track('orbit_site_screen_interest', { destination: href, link_text: text, page_path: location.pathname });
-    } else if (href.includes('orbit.trusta-sustain.com')) {
-      track('orbit_live_demo_open', { link_url: href, link_text: text, page_path: location.pathname });
-    } else if (href.startsWith('mailto:growth@')) {
-      track('enterprise_contact_intent', { link_text: text, page_path: location.pathname });
-    } else if (href.includes('app.trusta-sustain.com')) {
-      track('app_open', { link_url: href, link_text: text, page_path: location.pathname });
-    }
-  }, { capture: true });
-
   // Entity disambiguation for search engines and AI systems. Keep the legal entity name explicit.
   if (!document.querySelector('script[data-trusta-org-schema]')) {
     const schema = document.createElement('script');
@@ -86,7 +60,6 @@
     if (form && !form.dataset.analyticsBound) {
       form.dataset.analyticsBound = 'true';
       form.addEventListener('submit', () => {
-        track('orbit_readiness_complete', { source_path: path });
         setTimeout(() => {
           const report = document.querySelector('#report');
           if (!report) return;
@@ -124,7 +97,7 @@
   if (path.endsWith('/orbit.html') || path === '/orbit') {
     const heroActions = document.querySelector('.page-hero .actions');
     if (heroActions && !heroActions.querySelector('a[href="/orbit-readiness.html"]')) {
-      heroActions.innerHTML = '<a class="btn btn-accent" href="/orbit-readiness.html">Check ORBIT evidence readiness</a><a class="btn" href="https://orbit.trusta-sustain.com" target="_blank" rel="noopener">Open Live ORBIT Demo</a><a class="btn" href="/orbit-site-screen.html">See Site Screen</a>';
+      heroActions.innerHTML = '<a class="btn btn-accent" href="/orbit-readiness.html">Check ORBIT evidence readiness</a><a class="btn" href="https://orbit.trusta-sustain.com/demo/orbit" target="_blank" rel="noopener">Open Live ORBIT Demo</a><a class="btn" href="/orbit-site-screen.html">See Site Screen</a>';
     }
     const screen = document.querySelector('#screen .container');
     if (screen && !screen.querySelector('[data-orbit-readiness]')) {
@@ -132,7 +105,7 @@
       readiness.className = 'card';
       readiness.dataset.orbitReadiness = 'true';
       readiness.style.marginTop = '18px';
-      readiness.innerHTML = '<span class="eyebrow">Self-service first</span><h3>ORBIT Evidence Readiness Assessment</h3><p>Before paying for a Site Screen, test whether the decision has a defensible scope, comparison basis, source evidence, explicit uncertainty and a future verification path. No login or email required.</p><div class="actions"><a class="btn btn-accent" href="/orbit-readiness.html">Run free · 5–8 min</a><a class="btn" href="/orbit-site-screen.html">Check fixed-scope fit</a><a class="btn" href="https://orbit.trusta-sustain.com" target="_blank" rel="noopener">Inspect Live Demo</a></div>';
+      readiness.innerHTML = '<span class="eyebrow">Self-service first</span><h3>ORBIT Evidence Readiness Assessment</h3><p>Before paying for a Site Screen, test whether the decision has a defensible scope, comparison basis, source evidence, explicit uncertainty and a future verification path. No login or email required.</p><div class="actions"><a class="btn btn-accent" href="/orbit-readiness.html">Run free · 5–8 min</a><a class="btn" href="/orbit-site-screen.html">Check fixed-scope fit</a><a class="btn" href="https://orbit.trusta-sustain.com/demo/orbit" target="_blank" rel="noopener">Inspect Live Demo</a></div>';
       screen.appendChild(readiness);
     }
     return;
