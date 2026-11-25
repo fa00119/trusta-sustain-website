@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - facility-electricity-scan.html
+      - cold-storage-energy-scan.html
       - decision-review*.html
       - assets/energy-scan.js
       - assets/decision-review.js
@@ -28,6 +29,36 @@ jobs:
           const browser = await chromium.launch();
           try {
             const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+            await page.route('https://**/*', route => route.abort());
+            for (const [path, updatedTotal, expectedChange] of [
+              ['facility-electricity-scan.html', '14001', '+$1,501.00'],
+              ['cold-storage-energy-scan.html', '18901', '+$901.00']
+            ]) {
+              await page.goto('http://127.0.0.1:8765/' + path);
+              await page.evaluate(() => {
+                window.scanModes = [];
+                window.trackTrustaEvent = (event, params) => {
+                  if (event === 'energy_scan_completed') window.scanModes.push(params.mode);
+                };
+              });
+              const analyze = page.getByRole('button', { name: 'Analyze bills' });
+              const summary = page.locator('#scan-summary');
+              await page.locator('#load-example').click();
+              assert.match(await summary.textContent(), /^Illustrative sample\./);
+              await page.locator('[name="recent-total"]').fill(updatedTotal);
+              await analyze.click();
+              assert.match(await summary.textContent(), /^Illustrative sample\./);
+              assert.ok((await summary.textContent()).includes(expectedChange));
+              await page.getByRole('button', { name: 'Clear inputs' }).click();
+              for (const [period, total] of [['earlier', '100'], ['recent', '120']]) {
+                await page.locator('[name="' + period + '-days"]').fill('30');
+                await page.locator('[name="' + period + '-usage"]').fill('1000');
+                await page.locator('[name="' + period + '-total"]').fill(total);
+              }
+              await analyze.click();
+              assert.match(await summary.textContent(), /^Total electricity bill change:/);
+              assert.deepEqual(await page.evaluate(() => window.scanModes), ['sample', 'sample', 'manual']);
+            }
             await page.goto('http://127.0.0.1:8765/facility-electricity-scan.html');
             await page.locator('#load-example').click();
             const brief = page.getByRole('link', { name: 'Turn this into a decision brief' });

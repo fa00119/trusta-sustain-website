@@ -145,7 +145,6 @@
   });
 
   form.addEventListener('input', () => {
-    sampleLoaded = false;
     report.hidden = true;
     error.hidden = true;
   });
